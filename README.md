@@ -1,6 +1,6 @@
-# metagenome-read-mapping
+# Metagenome read mapping approaches
 
-The goal of this repository is to compare different metagenomics read mapping approaches.
+The goal of this repository is to write workflow components for mapping metagenomics reads that can be used on different architectures. 
 
 Data has been simulated using this tool https://github.com/eseiler/raptor_data_simulation
 
