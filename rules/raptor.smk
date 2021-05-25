@@ -1,16 +1,16 @@
 rule raptor_build:
 	input:
-		"../data/64/all_bin_paths.txt"
+		"simulated_data/all_bin_paths.txt"
 	output:
-		"../data/64/index_{k}_80m.raptor"
+		"raptor_out/raptor_w{w}_k{k}_{s}.index"
 	shell:
-		"./../raptor_clone/build/bin/raptor build --kmer {wildcards.k} --window {wildcards.k} --size 80m --output {output} {input}"
+		"raptor build --window {wildcards.w} --kmer {wildcards.w} --size {wildcards.s} --output {output} {input}"
 
 rule raptor_search:
 	input:
-		index = "../data/64/index_{k}_80m.raptor",
-		reads = "../data/64/reads_e{rer}_150/bin_33.fastq"
+		index = "raptor_out/raptor_w{w}_k{k}_{s}.index",
+		reads = "simulated_data/reads_e5_150/bin_{bin}.fastq"
 	output:
-		"../data/64/output_e{rer}/bin_33_k{k}_p{p}_o{o}_e{e}.output"
+		"raptor_out/bin{bin}_w{w}_k{k}_e{e}.hits"
 	shell:
-		"./../raptor_clone/build/bin/raptor search --kmer {wildcards.k} --window {wildcards.k} --error {wildcards.e} --pattern {wildcards.p} --overlap {wildcards.o} --index {input.index} --query {input.reads} --output {output}"	
+		"raptor search --window {wildcards.w} --kmer {wildcards.k} --error {wildcards.e} --index {input.index} --query {input.reads} --output {output}"	

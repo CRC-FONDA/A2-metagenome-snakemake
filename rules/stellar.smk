@@ -1,20 +1,20 @@
 # stellar query sequences have to be in fasta format
 rule convert_fastq:
 	input:
-		"../data/64/reads_e{rer}_150/{bin}.fastq"
+		"simulated_data/reads_e5_150/{bin}.fastq"
 	output:
-		"../data/64/reads_e{rer}_150/{bin}.fasta"
+		"simulated_data/reads_e5_150/{bin}.fasta"
 	shell:
 		"sed -n '1~4s/^@/>/p;2~4p' {input} > {output}"
 
 rule stellar:
 	input:
-		reads = "../data/64/reads_e{rer}_150/{bin}.fasta",
-		reference = "../data/64/all_bins.fasta"
+		reads = "simulated_data/reads_e5_150/{bin}.fasta",
+		reference = "simulated_data/all_bins.fasta"
 	output:
-		"../data/64/output_e{rer}/stellar/{bin}_{l}p_{e}e.gff"
+		"stellar_out/bin{bin}_l{l}_e{e}.gff"
 	params:
-		er = 0.001
+		er = 0.04
 	conda:
 		"../envs/stellar.yaml"
 	shell:
@@ -22,9 +22,9 @@ rule stellar:
 
 rule remove_metadata:
 	input:
-		"../data/64/output_e{rer}/stellar/{bin}_{l}p_{e}e.gff"
+		"stellar_out/bin{bin}_l{l}_e{e}.gff"
 	output:
-		"../data/64/output_e{rer}/stellar/{bin}_{l}p_{e}e_sed.gff"
+		"stellar_out/bin{bin}_l{l}_e{e}_sed.gff"
 	shell:
 		"sed 's/;.*//' {input} > {output}"
 		
