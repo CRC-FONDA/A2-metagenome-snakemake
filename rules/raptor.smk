@@ -8,6 +8,7 @@ rule raptor_build:
 	shell:
 		"raptor build --window {wildcards.w} --kmer {wildcards.w} --size 80m --output {output} {input}"
 
+# prefilter one bin of reads against all reference sequences
 rule raptor_search:
 	input:
 		index = "raptor_out/raptor_w{w}_k{k}_80m.index",

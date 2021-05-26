@@ -1,3 +1,4 @@
+#create a single index for one bin and map reads against it
 rule indexer:
 	input:
 		"simulated_data/bins/{bin}.fasta"

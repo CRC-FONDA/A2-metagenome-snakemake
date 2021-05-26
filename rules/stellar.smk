@@ -7,6 +7,7 @@ rule convert_fastq:
 	shell:
 		"sed -n '1~4s/^@/>/p;2~4p' {input} > {output}"
 
+# map reads from one bin against all references
 rule stellar:
 	input:
 		reads = "simulated_data/reads_e5_150/{bin}.fasta",
