@@ -1,11 +1,24 @@
-rule map_reads:
+rule indexer:
 	input:
-		"../data/64/reads_e{rer}_150/{bin}.fastq"
+		"simulated_data/bins/{bin}.fasta"
 	output:
-		"../"
-	params:
-		er = 0.001
+		"yara_out/{bin}.index.sa.val"
 	conda: 
 		"../envs/yara.yaml"
 	shell:
+		"yara_indexer {input} -o {output}"
+
+rule mapper:
+	input:
+		index = "yara_out/{bin}.index.sa.val",
+		reads = "simulated_data/reads_e5_150/{bin}.fastq"
+	output:
+		"yara_out/{bin}.bam"
+	params:
+		prefix = "yara_out/{bin}.index"
+	conda: 
+		"../envs/yara.yaml"
+	shell:
+		"yara_mapper {params.prefix} {input.reads} -o {output}"
+	
 
