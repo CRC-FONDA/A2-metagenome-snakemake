@@ -16,6 +16,7 @@ https://github.com/seqan/seqan/blob/develop/apps/yara/README.rst
 
 DREAM-Yara repo:
 https://github.com/temehi/dream_yara
+NB! DREAM-Yara is not available through conda, it has to be built from source. Also add location of binaries to $PATH.
 
 To run the snakemake workflow:
 `snakemake --use-conda --cores {e.g 8} --allow-ambiguity`
