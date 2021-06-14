@@ -6,20 +6,22 @@ rule yara_indexer:
 	input:
 		"simulated_data/bins/{bin}.fasta"
 	output:
-		"yara_out/indices/{bin}.index.sa.val.sa.len"
+		"yara_out/indices/{bin}.index.sa.val"
 	conda: 
 		"../envs/yara.yaml"
+	params:
+		out = "yara_out/indices/{bin}.index"
 	shell:
-		"yara_indexer {input} -o {output}"
+		"yara_indexer {input} -o {params.out}"
 
 rule yara_mapper:
 	input:
-		index = "yara_out/indices/{bin}.index.sa.val.sa.len",
+		index = "yara_out/indices/{bin}.index.sa.val",
 		reads = "simulated_data/reads_e5_150/{bin}.fastq"
 	output:
 		"yara_out/{bin}.bam"
 	params:
-		prefix = "yara_out/indices/{bin}.index.sa.val"
+		prefix = "yara_out/indices/{bin}.index"
 	conda: 
 		"../envs/yara.yaml"
 	shell:
