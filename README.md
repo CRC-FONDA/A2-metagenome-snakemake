@@ -40,3 +40,11 @@ https://github.com/seqan/raptor
 
 Yara read mapper:
 https://github.com/seqan/seqan/blob/develop/apps/yara/README.rst
+
+## MG-1
+
+Currently identical to MG-R
+
+This workflow is optimized to be run on a local system with large main memory and multiple threads. The large main memory is used when working with the IBF (at least 1GB) which has to be read completely into memory. The FM-indices, IBF creation and read mapping are done using 8 threads. 
+
+## MG-2
