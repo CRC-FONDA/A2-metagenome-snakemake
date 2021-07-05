@@ -1,6 +1,6 @@
 rule raptor_build:
 	input:
-		"simulated_data/all_bin_paths.txt"
+		"../simulated_data/all_bin_paths.txt"
 	output:
 		"raptor_out/raptor_w{w}_k{k}_80m.index"
 	conda:
@@ -12,7 +12,7 @@ rule raptor_build:
 rule raptor_search:
 	input:
 		index = "raptor_out/raptor_w{w}_k{k}_80m.index",
-		reads = "simulated_data/reads_e5_150/{bin}.fastq"
+		reads = "../simulated_data/reads_e5_150/{bin}.fastq"
 	output:
 		"raptor_out/{bin}_w{w}_k{k}_e{e}.hits"
 	conda:

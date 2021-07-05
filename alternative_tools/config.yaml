@@ -1,0 +1,9 @@
+w: 23
+k: 19
+e: 5
+er: 0.04
+l: 50
+
+# list of bin names
+bins: ../simulated_data/sample_bins
+all_bins: ../simulated_data/bin_numbers

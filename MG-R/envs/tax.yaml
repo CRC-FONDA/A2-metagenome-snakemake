@@ -1,0 +1,4 @@
+channels:
+  - bioconda
+dependencies:
+  - taxsbp =1.1.1
