@@ -27,6 +27,14 @@ rule yara_mapper:
 	shell:
 		"yara_mapper {params.prefix} {input.reads} -o {output}"
 	
+# mock clustering
+rule bin_reference:
+	input:
+		"simulated_data/all_bins.fasta"
+	output:
+		expand("simulated_data/bins_dream/{bin}.fasta", bin = all_bins)
+	shell:
+		"echo Clustering"
 
 # 
 # distributed read mapping
@@ -34,7 +42,7 @@ rule yara_mapper:
 # The filenames must follow a specific structure e.g 4.fastq NOT 04.fastq 
 #
 # create an IBF from clustered database
-rule dream_filter:
+rule dream_IBF:
 	input:
 		expand("simulated_data/bins_dream/{bin}.fasta", bin = all_bins)
 	output:
@@ -46,7 +54,7 @@ rule dream_filter:
 		"dream_yara_build_filter --threads {params.t} --kmer-size {params.k} --filter-type bloom --bloom-size 1 --num-hash 3 --output-file {output} {input}"
 
 # create FM-indices for each bin
-rule dream_indexer:
+rule dream_FM_index:
 	input:
 		bins = expand("simulated_data/bins_dream/{bin}.fasta", bin = all_bins)
 	output:
@@ -73,3 +81,13 @@ rule dream_mapper:
 		t = 8
 	shell:
 		"dream_yara_mapper -t {params.t} -ft bloom -e {params.er} -fi {input.filter} -o {output} {params.index_dir} {input.reads}"
+
+
+# mock gathering
+rule estimate_abundance:
+	input:
+		expand("dream_out/{bin}.bam", bin = all_bins)
+	output:
+		"all_bins.bam"
+	shell:
+		"touch all_bins.bam"
