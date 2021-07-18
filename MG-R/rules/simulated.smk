@@ -7,7 +7,8 @@ rl = config["read_length"]
 # these parameters describe the search
 k = config["kmer_length"]
 er = config["error_rate"]
-
+bf = config["bf_size"]
+h = config["nr_hashes"]
 
 
 # This file contains distributed read mapping for simulated data. Simulated data was already created in bins.
@@ -27,7 +28,7 @@ rule dream_IBF:
 	params:
 		t = 8
 	shell:
-		"dream_yara_build_filter --threads {params.t} --kmer-size {k} --filter-type bloom --bloom-size 1 --num-hash 3 --output-file {output} {input}"
+		"dream_yara_build_filter --threads {params.t} --kmer-size {k} --filter-type bloom --bloom-size {bf} --num-hash {h} --output-file {output} {input}"
 
 # create FM-indices for each bin
 rule dream_FM_index:
