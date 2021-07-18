@@ -1,2 +1,10 @@
 # list of bin names
-bins: ../simulated_data/bin_numbers
+bins: ../simulated_data/dream_numbers
+
+# parameters of simulated data
+read_error_rate: "3"     # this is NOT the number of allowed errors in an approximate match
+read_length: "150"
+
+# parameters for the search
+kmer_length: 19
+error_rate: 3

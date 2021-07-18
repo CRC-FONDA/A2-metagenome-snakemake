@@ -12,10 +12,10 @@ bovine_bins = list(range(0, 153))
 
 rule make_all:
 	input:
-		expand("dream_out/{bin}.bam", bin = bins),
+		expand("mapped_reads/{bin}.bam", bin = bins),
 		expand("bovine_out/{bin}.fasta", bin = bovine_bins)
 	shell:
 		"echo 'Done'"
 
-include: "rules/dream.smk"
+include: "rules/simulated.smk"
 include: "rules/bovine.smk"
