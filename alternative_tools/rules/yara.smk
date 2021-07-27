@@ -14,6 +14,7 @@ rule yara_indexer:
 	shell:
 		"yara_indexer {input} -o {params.out}"
 
+# one-to-one mapping between bin of reads and index
 rule yara_mapper:
 	input:
 		index = "yara_out/indices/{bin}.index.sa.val",

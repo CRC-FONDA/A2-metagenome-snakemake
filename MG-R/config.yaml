@@ -1,5 +1,5 @@
 # list of bin names
-bins: ../simulated_data/dream_numbers
+bins: ../simulated_data/dream_bin_numbers
 
 # parameters of simulated data
 read_error_rate: "5"     # this is NOT the number of allowed errors in an approximate match
