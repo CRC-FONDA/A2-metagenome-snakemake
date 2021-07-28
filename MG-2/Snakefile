@@ -1,15 +1,32 @@
-#load  samples  into  table
-import  pandas  as pd
-import os
-
+# All parameters are set in config.yaml
 configfile: "config.yaml"
-with open(config["bins"]) as f:
-    bins = f.read().splitlines()
+
+
+# Parameters for data simulation 
+bin_dir = config["raptor_bin_dir"]
+out_dir = config["data_out_dir"]
+
+size = config["ref_size"]
+bin_nr = config["number_of_bins"]
+rer = config["read_error_rate"]
+rl = config["read_length"]
+rc = config["read_count"]
+ht = config["haplotype_count"]
+
+
+# Creating simulated data
+import subprocess
+subprocess.call(['bash', './scripts/simulate.sh', str(bin_dir), str(out_dir), str(size), str(bin_nr), str(rer), str(rl), str(rc), str(ht)])
+
+# Creating list of wildcards
+bin_nr = config["number_of_bins"]
+digits = len(str(bin_nr))
+bin_list = ["bin_" + str(i).zfill(digits) for i in list(range(0,bin_nr))]
+
 
 rule make_all:
 	input:
-		expand("mapped_reads/{bin}.bam", bin = bins)
+                expand("data/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list),
+                expand("data/" + str(bin_nr) + "/reads_e" + str(rer) + "_" + str(rl) + "/{bin}.fastq", bin = bin_list)
 	shell:
 		"echo 'Done'"
-
-include: "rules/simulated.smk"

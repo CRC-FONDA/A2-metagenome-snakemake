@@ -1,9 +1,23 @@
-# list of bin names
-bins: ../simulated_data/dream_bin_numbers
+# location of raptor binaries
+raptor_bin_dir: "/home/evelin/metagenomics/raptor_data_simulation/build/bin"
+# location of simulated data
+data_out_dir: "/home/evelin/metagenomics/A2-metagenome-snakemake/MG-2/data"
 
-# parameters of simulated data
-read_error_rate: "5"     # this is NOT the number of allowed errors in an approximate match
-read_length: "150"
+#-----------------------------
+# Parameters of simulated data
+#
+# Note: if you want to rerun the workflow with NEW data you have to change at least one of the following parameters:
+#  * number of bins
+#  * read error rate
+#  * read length
+#
+#-----------------------------
+ref_size: 67108864       # size of reference in bits 4*2^20 =  64MiB
+number_of_bins: 64
+read_error_rate: 5       # number of errors; this is NOT the number of allowed errors in an approximate match
+read_length: 150         
+read_count: 65536        # size of query (count)
+haplotype_count: 16
 
 # parameters for the search
 kmer_length: 19
