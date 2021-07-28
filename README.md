@@ -15,15 +15,19 @@ To run the snakemake workflow in one of the subfolders:
 
 This workflow is optimized to be run on a local system with large main memory and multiple threads. The large main memory is used when working with the IBF (at least 1GB) which has to be read completely into memory. The FM-indices, IBF creation and read mapping are done using 8 threads. 
 
+
+Steps of workflow:
+1. Simulate data with the raptor data simulation:
+2. Create an IBF over the simulated reference data
+3. Create an FM-index for each of the bins of the reference
+4. Map each read to the FM-index determined by IBF pre-filtering
+
+---
+
 **NOTE:** Raptor data simulation and DREAM-Yara are not available through conda and have to be built from source. Also add location of DREAM-Yara binaries to $PATH.
 
----
-
-Raptor data simulation repo:
+Data simulation repo:
 https://github.com/eseiler/raptor_data_simulation
-
----
----
 
 DREAM-Yara repo:
 https://github.com/temehi/dream_yara
@@ -38,10 +42,13 @@ This version of a metagenomics workflow aims to work around the constraint of ha
 This is a state of the art representative workflow for mapping metagenomic reads. NB! Needs an update.
 
 ---
+
 taxSBP repo:
 https://github.com/pirovc/taxsbp
 
-**NOTE:** taxSBP requires additional inputs (merged.dmp and nodes.dmp) as well as a `seqinfo.tsv` file that has to be created specifically for each reference dataset. See tacSBP repo for more details. It might additionally be necessary to remove - and / characters from the reference file (.fasta sequence IDs).
+---
+
+**NOTE:** taxSBP requires additional inputs (merged.dmp and nodes.dmp) which are currently not downloaded as part of the workflow. There is also a `seqinfo.tsv` file that has to be created specifically for each reference dataset. See tacSBP repo for more details. It might additionally be necessary to remove - and / characters from the reference file (.fasta sequence IDs).
 
 ## alternative_tools
 

@@ -13,17 +13,22 @@ rl = config["read_length"]
 rc = config["read_count"]
 ht = config["haplotype_count"]
 
+# Helper variables
 digits = len(str(bin_nr))
-
-# Creating simulated data
-import subprocess
-subprocess.call(['bash', './scripts/simulate.sh', str(bin_dir), str(out_dir), str(size), str(bin_nr), str(rer), str(rl), str(rc), str(ht)])
-
-
-# Renaming files; the filenames must have a specific format e.g 4.fastq not 04.fastq
 padding = "".zfill(digits)
-subprocess.call(['bash', './scripts/rename_fasta.sh', str(bin_nr), padding])
-subprocess.call(['bash', './scripts/rename_fastq.sh', str(bin_nr), str(rer), str(rl), padding])
+
+# Checking if data was already simulated
+import os.path
+if os.path.isfile("data/" + str(bin_nr) + "/bins/0.fasta"):
+    print ("Skipping data simulation.")
+else:
+    # Creating simulated data
+    import subprocess
+    subprocess.call(['bash', './scripts/simulate.sh', str(bin_dir), str(out_dir), str(size), str(bin_nr), str(rer), str(rl), str(rc), str(ht)])
+
+    # Renaming files; the filenames must have a specific format e.g 4.fastq not 04.fastq
+    subprocess.call(['bash', './scripts/rename_fasta.sh', str(bin_nr), padding])
+    subprocess.call(['bash', './scripts/rename_fastq.sh', str(bin_nr), str(rer), str(rl), padding])
 
 
 # Creating list of wildcards

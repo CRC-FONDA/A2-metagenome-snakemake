@@ -1,9 +1,4 @@
 # all parameters are set in config.yaml
-#
-# these parameters describe the simulated data
-rer = config["read_error_rate"]
-rl = config["read_length"]	
-
 # these parameters describe the search
 k = config["kmer_length"]
 er = config["error_rate"]
@@ -13,16 +8,10 @@ h = config["nr_hashes"]
 
 # This file contains distributed read mapping for simulated data. Simulated data was already created in bins.
 #
-# The filenames must follow a specific structure e.g 4.fastq NOT 04.fastq 
-# renaming files:
-import subprocess
-subprocess.call(['bash', './scripts/rename_fasta.sh'])
-subprocess.call(['bash', './scripts/rename_fastq.sh', rer, rl])
-
 # create an IBF from clustered database
 rule dream_IBF:
 	input:
-		expand("../simulated_data/bins/{bin}.fasta", bin = bins)
+		expand("data/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
 		"IBF.filter"
 	params:
@@ -33,9 +22,9 @@ rule dream_IBF:
 # create FM-indices for each bin
 rule dream_FM_index:
 	input:
-		bins = expand("../simulated_data/bins/{bin}.fasta", bin = bins)
+		bins = expand("data/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
-		expand("fm_indices/{bin}.sa.val", bin = bins)
+		expand("fm_indices/{bin}.sa.val", bin = bin_list)
 	params:
 		outdir = "fm_indices/",
 		t = 8
@@ -47,7 +36,7 @@ rule dream_mapper:
 	input:
 		filter = "IBF.filter",
 		index = "fm_indices/{bin}.sa.val",
-		reads = "../simulated_data/reads_e" + rer + "_" + rl + "/{bin}.fastq"
+		reads = "data/" + str(bin_nr) + "/reads_e" + str(rer) + "_" + str(rl) + "/{bin}.fastq"
 	output:
 		"mapped_reads/{bin}.bam"
 	params:
