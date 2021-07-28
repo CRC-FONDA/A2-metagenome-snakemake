@@ -1,14 +1,38 @@
-#load  samples  into  table
-import  pandas  as pd
-import os
-
+# All parameters are set in config.yaml
 configfile: "config.yaml"
-with open(config["bins"]) as f:
-    bins = f.read().splitlines()
+
+
+# Parameters for data simulation 
+bin_dir = config["raptor_bin_dir"]
+out_dir = config["data_out_dir"]
+
+size = config["ref_size"]
+bin_nr = config["number_of_bins"]
+rer = config["read_error_rate"]
+rl = config["read_length"]
+rc = config["read_count"]
+ht = config["haplotype_count"]
+
+digits = len(str(bin_nr))
+
+# Creating simulated data
+import subprocess
+subprocess.call(['bash', './scripts/simulate.sh', str(bin_dir), str(out_dir), str(size), str(bin_nr), str(rer), str(rl), str(rc), str(ht)])
+
+
+# Renaming files; the filenames must have a specific format e.g 4.fastq not 04.fastq
+padding = "".zfill(digits)
+subprocess.call(['bash', './scripts/rename_fasta.sh', str(bin_nr), padding])
+subprocess.call(['bash', './scripts/rename_fastq.sh', str(bin_nr), str(rer), str(rl), padding])
+
+
+# Creating list of wildcards
+bin_nr = config["number_of_bins"]
+bin_list = [str(i) for i in list(range(0,bin_nr))]
 
 rule make_all:
 	input:
-		expand("mapped_reads/{bin}.bam", bin = bins)
+		expand("mapped_reads/{bin}.bam", bin = bin_list)
 	shell:
 		"echo 'Done'"
 

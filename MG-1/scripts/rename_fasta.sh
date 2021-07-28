@@ -1,20 +1,29 @@
 #!/bin/bash
 
-cd ../simulated_data/bins
+p="data/${1}/bins"
+echo "${p}"
+cd $p
 
+FILE="bin_${2}.fasta"
 
-FILE=bin_00.fasta
 if [ -f "$FILE" ]; then
     echo "renaming bin files"
     for file in bin_*.fasta; do 
-	    echo $file;
 	    mv "$file" "${file#bin_}";
     done;
 
-    for file in 0[0-9].fasta; do
+    for file in 0000[0-9]*.fasta; do
         mv "$file" "${file#0}";
     done;
-        echo "$FILE exists."
+    for file in 000[0-9]*.fasta; do
+        mv "$file" "${file#0}";
+    done;
+    for file in 00[0-9]*.fasta; do
+        mv "$file" "${file#0}";
+    done;
+    for file in 0[0-9]*.fasta; do
+        mv "$file" "${file#0}";
+    done;
 fi
 
 
