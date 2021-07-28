@@ -19,7 +19,7 @@ padding = "".zfill(digits)
 
 # Checking if data was already simulated
 import os.path
-if os.path.isfile("data/" + str(bin_nr) + "/bins/0.fasta"):
+if os.path.isfile("data/" + str(bin_nr) + "/reads_e" + str(rer) + "_" + str(rl) + "/0.fastq"):
     print ("Skipping data simulation.")
 else:
     # Creating simulated data
