@@ -40,7 +40,7 @@ rule dream_mapper:
 		index = expand("fm_indices/{bin}.sa.val", bin = bin_list),
 		reads = "../data/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/all.fastq"
 	output:
-		"mapped_reads/{bin}.bam"
+		"mapped_reads/all.bam"
 	params:
 		index_dir = "fm_indices/",
 		t = 8
