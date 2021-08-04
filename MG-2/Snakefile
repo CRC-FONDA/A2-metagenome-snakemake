@@ -1,36 +1,13 @@
-# All parameters are set in config.yaml
-configfile: "config.yaml"
-
+# Data simulation parameters are set in ../simulation_config.yaml
+configfile: "../simulation_config.yaml"
 
 # Parameters for data simulation 
-bin_dir = config["raptor_bin_dir"]
-out_dir = config["data_out_dir"]
-
-size = config["ref_size"]
 bin_nr = config["number_of_bins"]
-rer = config["read_error_rate"]
+epr = config["errors_per_read"]
 rl = config["read_length"]
-rc = config["read_count"]
-ht = config["haplotype_count"]
-
-# Helper variables
-digits = len(str(bin_nr))
-padding = "".zfill(digits)
-
-# Checking if data was already simulated
-import os.path
-if os.path.isfile("data/" + str(bin_nr) + "/reads_e" + str(rer) + "_" + str(rl) + "/bin_" + padding + ".fastq"):
-    print ("Skipping data simulation.")
-else:
-    # Creating simulated data
-    import subprocess
-    subprocess.call(['bash', './scripts/simulate.sh', str(bin_dir), str(out_dir), str(size), str(bin_nr), str(rer), str(rl), str(rc), str(ht)])
 
 # Creating list of wildcards
-bin_nr = config["number_of_bins"]
-digits = len(str(bin_nr))
-bin_list = ["bin_" + str(i).zfill(digits) for i in list(range(0,bin_nr))]
-
+bin_list = [str(i) for i in list(range(0,bin_nr))]
 
 rule make_all:
 	input:
