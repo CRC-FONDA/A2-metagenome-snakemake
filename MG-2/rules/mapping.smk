@@ -1,14 +1,14 @@
 # all parameters are set in config.yaml
 # these parameters describe the search
 k = config["kmer_length"]
-er = config["error_rate"]
+ep = config["error_percentage"]
 
 # This file contains distributed read mapping for simulated data. Simulated data was already created in bins.
 
 # create FM-indices for each bin
-rule FM_index:
+rule dream_FM_index:
 	input:
-		bins = expand("data/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
+		bins = expand("../data/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
 		expand("fm_indices/{bin}.sa.val", bin = bin_list)
 	params:
@@ -16,17 +16,29 @@ rule FM_index:
 		t = 8
 	shell:
 		"dream_yara_indexer --threads {params.t} --output-prefix {params.outdir} {input.bins}"
-	
-# map reads to bins that were determined by the hashmap k-mer lemma filter
-rule mapper:
+
+
+# call bash script that acts as read mapping distributor
+# TODO: delete distributed read files after not used anymore
+rule search_distributor:
 	input:
-		filter = "IBF.filter",
-		index = "fm_indices/{bin}.sa.val",
-		reads = "data/" + str(bin_nr) + "/reads_e" + str(rer) + "_" + str(rl) + "/{bin}.fastq"
+		matches = "hashmap/all.output",
+		all = "../data/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/all.fastq"
+	output:
+		expand("distributed_reads/{bin}.fastq", bin = bin_list)
+	shell:
+		"./scripts/search_distributor.sh {input.matches} {input.all} {bin_nr}"
+
+# map reads to bins that were determined by the hashmap k-mer lemma filter
+rule yara_mapper:
+	input:
+		reads = "distributed_reads/{bin}.fastq",
+		index = "fm_indices/{bin}.sa.val"
 	output:
 		"mapped_reads/{bin}.bam"
+	conda:
+		"../envs/yara.yaml"
 	params:
-		index_dir = "fm_indices/",
-		t = 8
+		prefix = "fm_indices/{bin}",
 	shell:
-		"dream_yara_mapper -t {params.t} -ft bloom -e {er} -fi {input.filter} -o {output} {params.index_dir} {input.reads}"
+		"yara_mapper -e {ep} -o {output} {params.prefix} {input.reads}"

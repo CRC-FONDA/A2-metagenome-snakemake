@@ -3,7 +3,7 @@ configfile: "search_config.yaml"
 
 # Parameters for prefiltering
 k = config["kmer_length"]
-er = config["errors"]
+nr_er = config["allowed_errors"]
 
 # Create txt file with one bin file per line
 # File order determines the bin number a read is assigned to
@@ -33,4 +33,4 @@ rule search_prefilter:
 	params:
 		t = 8
 	shell:
-		"./../../low-memory-prefilter/build/bin/hashmap search --threads {params.t} --error {er} --hashmap {input.filter} --output {output} {input.reads}"
+		"./../../low-memory-prefilter/build/bin/hashmap search --threads {params.t} --error {nr_er} --hashmap {input.filter} --output {output} {input.reads}"
