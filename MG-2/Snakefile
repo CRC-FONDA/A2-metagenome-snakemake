@@ -34,7 +34,9 @@ bin_list = ["bin_" + str(i).zfill(digits) for i in list(range(0,bin_nr))]
 
 rule make_all:
 	input:
-                expand("data/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list),
-                expand("data/" + str(bin_nr) + "/reads_e" + str(rer) + "_" + str(rl) + "/{bin}.fastq", bin = bin_list)
+                "hashmap/all.output"
 	shell:
 		"echo 'Done'"
+
+include: "rules/prefiltering.smk"
+# include: "rules/mapping.smk"

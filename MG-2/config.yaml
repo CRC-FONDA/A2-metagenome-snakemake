@@ -13,10 +13,19 @@ data_out_dir: "/home/evelin/metagenomics/A2-metagenome-snakemake/MG-2/data"
 #
 #-----------------------------
 
-
-ref_size: 67108864       # size of reference in bytes?? 4*2^20 = 4MiB
-number_of_bins: 64
+ref_size: 1048576       # size of reference in bytes 4*2^20 = 4MiB
+number_of_bins: 1024
 read_error_rate: 5       # number of errors; this is NOT the number of allowed errors in an approximate match
 read_length: 150         
 read_count: 65536        # size of query (count)
-haplotype_count: 16
+haplotype_count: 1
+
+
+#-----------------------------
+#
+# Parameters of prefiltering
+#
+#-----------------------------
+
+kmer_length: 10    # should be 9 < k < 13
+errors: 4
