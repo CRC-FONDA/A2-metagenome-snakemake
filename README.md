@@ -8,8 +8,15 @@ The workflows are currently run on two smaller metagenomic datasets:
 
 The repository is divided into subprojects, details of each below.
 
+## Running
+
 To run the snakemake workflow in one of the subfolders:
-`snakemake --use-conda --cores {e.g 8} --allow-ambiguity`
+`snakemake --use-conda --cores {e.g 8}`
+
+Other useful flags:
+1. `--force-use-threads` force threads instead of processes in case each process takes too much local memory to be run in parallel 
+2. `--dag` don't run any jobs just create a figure of the directed acyclic graph
+3. `--dryrun` don't run any jobs just display the order in which they would be executed.
 
 ## MG-1
 
@@ -37,6 +44,18 @@ https://github.com/temehi/dream_yara
 ## MG-2
 
 This version of a metagenomics workflow aims to work around the constraint of having low memory. A hash table based approach is used instead of the IBF.
+
+Steps of workflow:
+1. Simulate data with the raptor data simulation:
+2. Create a hash table over the simulated reference data
+3. Create an FM-index for each of the bins of the reference
+4. Map each read to the FM-index determined by hashmap pre-filtering
+
+### HashMap
+
+https://github.com/eaasna/low-memory-prefilter
+
+Create a hash table where the keys are the complete set of k-mers. The value corresponding to a key is a list of all the bins that contain this k-mer.  
 
 ## MG-R 
 This is a state of the art representative workflow for mapping metagenomic reads. NB! Needs an update.
