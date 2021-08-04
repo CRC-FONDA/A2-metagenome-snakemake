@@ -37,8 +37,8 @@ rule dream_FM_index:
 rule dream_mapper:
 	input:
 		filter = "IBF.filter",
-		index = "fm_indices/{bin}.sa.val",
-		reads = "../data/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/{bin}.fastq"
+		index = expand("fm_indices/{bin}.sa.val", bin = bin_list),
+		reads = "../data/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/all.fastq"
 	output:
 		"mapped_reads/{bin}.bam"
 	params:
