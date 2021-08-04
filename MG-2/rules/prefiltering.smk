@@ -1,13 +1,19 @@
 # Prefiltering and search parameters are set in search_config.yaml
 configfile: "search_config.yaml"
 
-# these parameters describe the prefiltering
+# Parameters for prefiltering
 k = config["kmer_length"]
-#TODO: some application ask for error rate, others for number of errors 
 er = config["errors"]
 
-import subprocess
-subprocess.call(['bash', './scripts/paths.sh', str(bin_nr)])
+# Create txt file with one bin file per line
+# File order determines the bin number a read is assigned to
+import pathlib
+
+PWD = pathlib.Path().absolute()
+bin_path_list = [str(PWD) + "/../data/" + str(bin_nr) + "/bins/" + str(i) + ".fasta" for i in list(range(0,bin_nr))]
+with open('metadata/bin_paths.txt', 'w') as f:
+    for item in bin_path_list:
+        f.write("%s\n" % item)
 
 rule build_prefilter:
 	input:
