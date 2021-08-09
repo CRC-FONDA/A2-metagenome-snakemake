@@ -18,6 +18,11 @@ Other useful flags:
 Simulating DNA sequences with https://github.com/eseiler/raptor_data_simulation.
 Run this workflow before running either MG-1 or MG-2. The data simulation parameters are set in `simulation_config.yaml`. Both MG-1 and MG-2 have a separate configuration file called `search_config.yaml` where prefiltering and search parameters should be set. 
 
+**NOTE:** Raptor data simulation has to be built from source. 
+
+Data simulation source code:
+https://github.com/eseiler/raptor_data_simulation
+
 ## MG-1
 
 This workflow is optimized to be run on a local system with large main memory and multiple threads. The large main memory is used when working with the IBF (at least 1GB) which has to be read completely into memory. The FM-indices, IBF creation and read mapping are done using 8 threads. 
@@ -29,17 +34,10 @@ Steps of workflow:
 3. Create an FM-index for each of the bins of the reference
 4. Map each read to the FM-index determined by IBF pre-filtering
 
----
+**NOTE:** DREAM-Yara is not available through conda and has to be built from source. Also add location of DREAM-Yara binaries to $PATH.
 
-**NOTE:** Raptor data simulation and DREAM-Yara are not available through conda and have to be built from source. Also add location of DREAM-Yara binaries to $PATH.
-
-Data simulation repo:
-https://github.com/eseiler/raptor_data_simulation
-
-DREAM-Yara repo:
+DREAM-Yara source code:
 https://github.com/temehi/dream_yara
-
----
 
 ## MG-2
 
@@ -51,11 +49,10 @@ Steps of workflow:
 3. Create an FM-index for each of the bins of the reference
 4. Map each read to the FM-index determined by hashmap pre-filtering
 
-### HashMap
+**NOTE:** The hashmap has to be built from source.
 
+Hashmap source code: 
 https://github.com/eaasna/low-memory-prefilter
-
-Create a hash table where the keys are the complete set of k-mers. The value corresponding to a key is a list of all the bins that contain this k-mer.  
 
 # Outdated
 
