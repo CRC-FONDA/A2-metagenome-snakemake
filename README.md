@@ -83,22 +83,3 @@ https://github.com/pirovc/taxsbp
 
 **NOTE:** taxSBP requires additional inputs (merged.dmp and nodes.dmp) which are currently not downloaded as part of the workflow. There is also a `seqinfo.tsv` file that has to be created specifically for each reference dataset. See tacSBP repo for more details. It might additionally be necessary to remove - and / characters from the reference file (.fasta sequence IDs).
 </details>
-
-<details>
-  <summary>Alternative tools (outdated)</summary>
-  
-### alternative_tools
-
-This subprojects has currently been abandoned and might be broken. These are tools that did not fit into the representative workflow but are nevertheless state of the art and widely used.
-
-STELLAR documentation:
-https://github.com/seqan/seqan/tree/master/apps/stellar
-
-Raptor documentation:
-https://github.com/seqan/raptor
-
-Yara read mapper:
-https://github.com/seqan/seqan/blob/develop/apps/yara/README.rst
-</details>
-
-
