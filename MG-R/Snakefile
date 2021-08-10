@@ -1,21 +1,19 @@
-#load  samples  into  table
-import  pandas  as pd
-import os
+# Data simulation parameters are set in ../simulation_config.yaml
+configfile: "../simulation_config.yaml"
 
-configfile: "config.yaml"
-with open(config["bins"]) as f:
-    bins = f.read().splitlines()
+# Parameters for data simulation 
+bin_nr = config["number_of_bins"]
+epr = config["errors_per_read"]
+rl = config["read_length"]
 
-# TaxSBP failed for 64 bins
-# If you specify 128 bins for TaxSBP it creates *approximately* 128 bins (so 153 bins were created)
-bovine_bins = list(range(0, 153))
+# Creating list of wildcards
+bin_list = [str(i) for i in list(range(0,bin_nr))]
 
 rule make_all:
 	input:
-		expand("mapped_reads/{bin}.bam", bin = bins),
-		expand("bovine_out/{bin}.fasta", bin = bovine_bins)
+		"mapped_reads/idxstats.out"
 	shell:
 		"echo 'Done'"
 
-include: "rules/simulated.smk"
-include: "rules/bovine.smk"
+include: "rules/dream_yara.smk"
+include: "rules/abundance.smk"
