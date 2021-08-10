@@ -1,9 +1,9 @@
-# Search parameters are set in config.yaml
+# Search parameters (besides error rate)  are set in config.yaml
 configfile: "search_config.yaml"
 
 # Parameters for the search
 k = config["kmer_length"]
-er = config["error_rate"]
+er = epr / rl              # this is the allowed error rate for an approximate match
 bf = config["bf_size"]
 h = config["nr_hashes"]
 

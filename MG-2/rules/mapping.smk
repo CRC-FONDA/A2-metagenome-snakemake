@@ -1,7 +1,7 @@
 # all parameters are set in config.yaml
 # these parameters describe the search
 k = config["kmer_length"]
-ep = config["error_percentage"]
+ep = round(epr / rl * 100) 		# percentage of errors allowed in an approximate match (int)
 
 # This file contains distributed read mapping for simulated data. Simulated data was already created in bins.
 

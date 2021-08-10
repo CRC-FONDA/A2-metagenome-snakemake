@@ -3,6 +3,5 @@
 #-----------------------------
 
 kmer_length: 19
-error_rate: 0.04  # NB! the data simulation asks for number of errors per read; here the fraction of errors 0 < error_rate < 1
 bf_size: 1      # in GB; min 1GB
 nr_hashes: 3

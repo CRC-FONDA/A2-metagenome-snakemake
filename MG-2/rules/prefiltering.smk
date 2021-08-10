@@ -3,7 +3,7 @@ configfile: "search_config.yaml"
 
 # Parameters for prefiltering
 k = config["kmer_length"]
-nr_er = config["allowed_errors"]
+nr_er = epr		# number of errors allowed in an approximate local match
 
 # Create txt file with one bin file per line
 # File order determines the bin number a read is assigned to
