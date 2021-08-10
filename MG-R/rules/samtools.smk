@@ -1,3 +1,12 @@
+# -----------------------------
+# 
+# Rule resources for sorting:
+# m: max memory per thread in bytes (default is 500000000)
+# t: threads (default single threaded)
+#
+# thread and memory parameters could also be added to the index and stats commands
+# -----------------------------
+
 rule samtools_sort:
 	input:
 		"mapped_reads/all.bam"
@@ -5,8 +14,11 @@ rule samtools_sort:
 		"mapped_reads/all_sorted.bam"
 	conda:
 		"../envs/samtools.yaml"
+	params:
+		t = 1,
+		m = 500000000
 	shell:
-		"samtools sort {input} -o {output}"
+		"samtools sort -m {params.m} -@ {params.t} {input} -o {output}"
 
 rule samtools_index:
 	input:
@@ -17,6 +29,7 @@ rule samtools_index:
 		"../envs/samtools.yaml"
 	shell:
 		"samtools index {input}"
+
 
 rule samtools_stats:
 	input:

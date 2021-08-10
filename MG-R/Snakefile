@@ -16,4 +16,4 @@ rule make_all:
 		"echo 'Done'"
 
 include: "rules/dream_yara.smk"
-include: "rules/abundance.smk"
+include: "rules/samtools.smk"
