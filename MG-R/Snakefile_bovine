@@ -2,20 +2,14 @@
 import  pandas  as pd
 import os
 
-configfile: "config.yaml"
-with open(config["bins"]) as f:
-    bins = f.read().splitlines()
-
 # TaxSBP failed for 64 bins
 # If you specify 128 bins for TaxSBP it creates *approximately* 128 bins (so 153 bins were created)
 bovine_bins = list(range(0, 153))
 
 rule make_all:
 	input:
-		expand("mapped_reads/{bin}.bam", bin = bins),
 		expand("bovine_out/{bin}.fasta", bin = bovine_bins)
 	shell:
 		"echo 'Done'"
 
-include: "rules/simulated.smk"
 include: "rules/bovine.smk"
