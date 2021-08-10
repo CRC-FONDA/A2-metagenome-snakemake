@@ -1,10 +1,13 @@
 # All parameters are set in config.yaml
 configfile: "../simulation_config.yaml"
 
+# Chosen workflow
+wf = config["wf"]
 
 # Parameters for data simulation 
 bin_dir = config["raptor_bin_dir"]
 out_dir = config["data_out_dir"]
+wf_out_dir = out_dir + "/" + wf
 
 size = config["ref_size"]
 bin_nr = config["number_of_bins"]
@@ -19,16 +22,16 @@ padding = "".zfill(digits)
 
 # Checking if data was already simulated
 import os.path
-if os.path.isfile("../data/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/0.fastq"):
+if os.path.isfile("../data/" + wf + "/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/0.fastq"):
     print ("Skipping data simulation.")
 else:
     # Creating simulated data
     import subprocess
-    subprocess.call(['bash', './scripts/simulate.sh', str(bin_dir), str(out_dir), str(size), str(bin_nr), str(epr), str(rl), str(rc), str(ht)])
+    subprocess.call(['bash', './scripts/simulate.sh', bin_dir, wf_out_dir, str(size), str(bin_nr), str(epr), str(rl), str(rc), str(ht)])
 
     # Renaming files; the filenames must have a specific format e.g 4.fastq not 04.fastq
-    subprocess.call(['bash', './scripts/rename_fasta.sh', str(bin_nr), padding])
-    subprocess.call(['bash', './scripts/rename_fastq.sh', str(bin_nr), str(epr), str(rl), padding])
+    subprocess.call(['bash', './scripts/rename_fasta.sh', wf, str(bin_nr), padding])
+    subprocess.call(['bash', './scripts/rename_fastq.sh', wf, str(bin_nr), str(epr), str(rl), padding])
 
 rule make_all:
 	shell:

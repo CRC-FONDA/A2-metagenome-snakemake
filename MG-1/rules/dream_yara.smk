@@ -13,7 +13,7 @@ h = config["nr_hashes"]
 # create an IBF from clustered database
 rule dream_IBF:
 	input:
-		expand("../data/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
+		expand("../data/MG-1/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
 		"IBF.filter"
 	params:
@@ -24,7 +24,7 @@ rule dream_IBF:
 # create FM-indices for each bin
 rule dream_FM_index:
 	input:
-		bins = expand("../data/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
+		bins = expand("../data/MG-1/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
 		expand("fm_indices/{bin}.sa.val", bin = bin_list)
 	params:
@@ -38,7 +38,7 @@ rule dream_mapper:
 	input:
 		filter = "IBF.filter",
 		index = expand("fm_indices/{bin}.sa.val", bin = bin_list),
-		reads = "../data/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/all.fastq"
+		reads = "../data/MG-1/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/all.fastq"
 	output:
 		"mapped_reads/all.bam"
 	params:

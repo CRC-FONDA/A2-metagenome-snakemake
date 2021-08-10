@@ -8,7 +8,7 @@ ep = round(epr / rl * 100) 		# percentage of errors allowed in an approximate ma
 # create FM-indices for each bin
 rule dream_FM_index:
 	input:
-		bins = expand("../data/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
+		bins = expand("../data/MG-2/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
 		expand("fm_indices/{bin}.sa.val", bin = bin_list)
 	params:
@@ -23,7 +23,7 @@ rule dream_FM_index:
 rule search_distributor:
 	input:
 		matches = "hashmap/all.output",
-		all = "../data/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/all.fastq"
+		all = "../data/MG-2/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/all.fastq"
 	output:
 		expand("distributed_reads/{bin}.fastq", bin = bin_list)
 	shell:

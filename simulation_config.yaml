@@ -1,3 +1,12 @@
+#-----------------------------
+# Choose which workflow to generate data for.
+# One at a time. 
+#-----------------------------
+
+wf: "MG-R"
+#wf: "MG-1"
+#wf: "MG-2"
+
 # location of raptor binaries
 raptor_bin_dir: "/home/evelin/metagenomics/raptor_data_simulation/build/bin"
 # location of simulated data
@@ -6,7 +15,7 @@ data_out_dir: "/home/evelin/metagenomics/A2-metagenome-snakemake/data"
 #-----------------------------
 # Parameters of simulated data
 #
-# Note: if you want to rerun the workflow with NEW data you have to change at least one of the following parameters:
+# Note: if you want to rerun the same workflow with NEW data you have to change at least one of the following parameters:
 #  * number of bins
 #  * read error rate
 #  * read length
@@ -14,8 +23,8 @@ data_out_dir: "/home/evelin/metagenomics/A2-metagenome-snakemake/data"
 #-----------------------------
 
 ref_size: 1048576        # size of reference in bytes? 4*2^20 = 4MiB
-number_of_bins: 1024
+number_of_bins: 64
 errors_per_read: 5       # number of errors; this is the basis for error rate in an approximate match
 read_length: 150
-read_count: 65536        # size of query (count)
+read_count: 8192        # size of query (count)
 haplotype_count: 4

@@ -1,10 +1,10 @@
 #!/bin/bash
 
-p="../data/${1}/bins"
+p="../data/${1}/${2}/bins"
 echo "${p}"
 cd $p
 
-FILE="bin_${2}.fasta"
+FILE="bin_${3}.fasta"
 
 if [ -f "$FILE" ]; then
     echo "renaming bin files"

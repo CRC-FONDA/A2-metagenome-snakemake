@@ -1,11 +1,11 @@
 #!/bin/bash
 
 
-p="../data/${1}/reads_e${2}_${3}"
+p="../data/${1}/${2}/reads_e${3}_${4}"
 echo "${p}"
 cd $p
 
-FILE="bin_${4}.fastq"
+FILE="bin_${5}.fastq"
 if [ -f "$FILE" ]; then
     # file exists
     echo "renaming read files"
