@@ -3,8 +3,8 @@
 # One at a time. 
 #-----------------------------
 
-wf: "MG-R"
-#wf: "MG-1"
+#wf: "MG-R"
+wf: "MG-1"
 #wf: "MG-2"
 
 # location of raptor binaries

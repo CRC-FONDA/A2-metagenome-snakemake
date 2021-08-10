@@ -37,7 +37,7 @@ rule yara_mapper:
 	output:
 		"mapped_reads/{bin}.bam"
 	conda:
-		"../envs/yara.yaml"
+		"../../envs/yara.yaml"
 	params:
 		prefix = "fm_indices/{bin}",
 	shell:
