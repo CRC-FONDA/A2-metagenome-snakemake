@@ -41,6 +41,8 @@ Steps of workflow:
 5. Sort and index the resulting .bam file and find the number of reads that mapped to each bin.
 
 ### MG-1
+![directed acyclic graph for MG-1](https://github.com/eaasna/A2-metagenome-snakemake/blob/gathering/MG-1/dag.png)
+
 This workflow is optimized to be run on a local system with large main memory and multiple threads. The large main memory is used when working with the IBF (at least 1GB) which has to be read completely into memory. The FM-indices, IBF creation and read mapping are done using 8 threads. 
 
 Steps of workflow:
@@ -55,6 +57,7 @@ DREAM-Yara source code:
 https://github.com/temehi/dream_yara
 
 ### MG-2
+![directed acyclic graph for MG-2](https://github.com/eaasna/A2-metagenome-snakemake/blob/gathering/MG-2/dag.png)
 
 This version of a metagenomics workflow aims to work around the constraint of having low memory. A hash table based approach is used instead of the IBF.
 
