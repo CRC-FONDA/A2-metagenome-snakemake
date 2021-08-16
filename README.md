@@ -13,7 +13,7 @@ To run the snakemake workflow in one of the subfolders:
 
 Other useful flags:
 1. `--force-use-threads` add this flag to force threads instead of processes in case each process takes too much local memory to be run in parallel 
-2. `snakemake --dag | dot | display` don't run any jobs just create a figure of the directed acyclic graph
+2. `snakemake --dag | dot -Tpng > dag.png` don't run any jobs just create a figure of the directed acyclic graph
 3. `snakemake --dryrun` don't run any jobs just display the order in which they would be executed.
 
 ---
