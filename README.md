@@ -34,20 +34,18 @@ https://github.com/eseiler/raptor_data_simulation
 This is a state of the art representative workflow for mapping metagenomic reads. The prefiltering and read mapping steps of MG-R are identical to MG-1. MG-R additionally contains a species abundance estimation step.
 
 Steps of workflow:
-1. Simulate data with the raptor data simulation:
-2. Create an IBF over the simulated reference data
-3. Create an FM-index for each of the bins of the reference
-4. Map each read to the FM-index determined by IBF pre-filtering
-5. Sort and index the resulting .bam file and find the number of reads that mapped to each bin.
+1. Create an IBF over the simulated reference data
+2. Create an FM-index for each of the bins of the reference
+3. Map each read to the FM-index determined by IBF pre-filtering
+4. Sort and index the resulting .bam file and find the number of reads that mapped to each bin.
 
 ### MG-1
 This workflow is optimized to be run on a local system with large main memory and multiple threads. The large main memory is used when working with the IBF (at least 1GB) which has to be read completely into memory. The FM-indices, IBF creation and read mapping are done using 8 threads. 
 
 Steps of workflow:
-1. Simulate data with the raptor data simulation:
-2. Create an IBF over the simulated reference data
-3. Create an FM-index for each of the bins of the reference
-4. Map each read to the FM-index determined by IBF pre-filtering
+1. Create an IBF over the simulated reference data
+2. Create an FM-index for each of the bins of the reference
+3. Map each read to the FM-index determined by IBF pre-filtering. The read distribution is done in-memory.
 
 **NOTE:** DREAM-Yara is not available through conda and has to be built from source. Also add location of DREAM-Yara binaries to $PATH.
 
@@ -59,10 +57,11 @@ https://github.com/temehi/dream_yara
 This version of a metagenomics workflow aims to work around the constraint of having low memory. A hash table based approach is used instead of the IBF.
 
 Steps of workflow:
-1. Simulate data with the raptor data simulation:
-2. Create a hash table over the simulated reference data
-3. Create an FM-index for each of the bins of the reference
-4. Map each read to the FM-index determined by hashmap pre-filtering
+1. Create a hash table over the simulated reference data
+2. Query the reads in the hashmap and determine potential bin matches
+3. Distribute reads by writing e.g all reads that should be mapped to bin 1 to a file
+4. Create an FM-index for each of the bins of the reference
+5. Read the distributed reads and map to the FM-index determined by hashmap pre-filtering
 
 **NOTE:** The hashmap has to be built from source.
 
