@@ -11,8 +11,9 @@ bin_list = [str(i) for i in list(range(0,bin_nr))]
 
 rule make_all:
 	input:
-		expand("mapped_reads/all.bam", bin = bin_list)
+		"mapped_reads/idxstats.out"
 	shell:
 		"echo 'Done'"
 
 include: "rules/dream_yara.smk"
+include: "rules/samtools.smk"
