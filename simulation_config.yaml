@@ -4,8 +4,8 @@
 #-----------------------------
 
 #wf: "MG-R"
-#wf: "MG-1"
-wf: "MG-2"
+wf: "MG-1"
+#wf: "MG-2"
 
 # location of raptor binaries
 raptor_bin_dir: "/home/evelin/metagenomics/raptor_data_simulation/build/bin"
@@ -26,5 +26,5 @@ ref_size: 81920        # size of reference in bytes? 4*2^20 = 4MiB
 number_of_bins: 8
 errors_per_read: 5       # number of errors; this is the basis for error rate in an approximate match
 read_length: 150
-read_count: 2048        # size of query (count)
-haplotype_count: 1
+read_count: 8192        # size of query (count)
+haplotype_count: 4

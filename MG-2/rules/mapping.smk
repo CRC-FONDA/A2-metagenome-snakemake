@@ -1,7 +1,7 @@
 # all parameters are set in config.yaml
 # these parameters describe the search
 k = config["kmer_length"]
-ep = round(epr / rl * 100) 		# percentage of errors allowed in an approximate match (int)
+ep = round(config["allowed_errors"] / rl * 100) 		# percentage of errors allowed in an approximate match (int)
 
 # This file contains distributed read mapping for simulated data. Simulated data was already created in bins.
 
@@ -29,6 +29,7 @@ rule search_distributor:
 	shell:
 		"./scripts/search_distributor.sh {input.matches} {input.all} {bin_nr}"
 
+# TODO: remove hard coded mapping options
 # map reads to bins that were determined by the hashmap k-mer lemma filter
 rule yara_mapper:
 	input:
@@ -41,4 +42,4 @@ rule yara_mapper:
 	params:
 		prefix = "fm_indices/{bin}",
 	shell:
-		"yara_mapper -e {ep} -o {output} {params.prefix} {input.reads}"
+		"yara_mapper -e {ep} -s 10 -y full -o {output} {params.prefix} {input.reads}"

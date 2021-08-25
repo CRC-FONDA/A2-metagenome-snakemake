@@ -11,7 +11,8 @@ bin_list = [str(i) for i in list(range(0,bin_nr))]
 
 rule make_all:
 	input:
-                "mapped_reads/idxstats.out"
+                "mapped_reads/idxstats.out",
+		"mapped_reads/all_sorted.sam"
 	shell:
 		"echo 'Done'"
 

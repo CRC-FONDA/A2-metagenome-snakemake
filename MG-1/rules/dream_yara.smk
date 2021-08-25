@@ -3,7 +3,7 @@ configfile: "search_config.yaml"
 
 # Parameters for the search
 k = config["kmer_length"]
-er = epr / rl              # this is the allowed error rate for an approximate match
+er = config["allowed_errors"] / rl              # this is the allowed error rate for an approximate match
 bf = config["bf_size"]
 h = config["nr_hashes"]
 
@@ -45,4 +45,4 @@ rule dream_mapper:
 		index_dir = "fm_indices/",
 		t = 8
 	shell:
-		"dream_yara_mapper -t {params.t} -ft bloom -e {er} -fi {input.filter} -o {output} {params.index_dir} {input.reads}"
+		"dream_yara_mapper -t {params.t} -ft bloom -e {er} -s 10 -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"

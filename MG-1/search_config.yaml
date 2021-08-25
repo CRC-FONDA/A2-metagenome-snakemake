@@ -2,6 +2,7 @@
 # Parameters for the search
 #-----------------------------
 
+allowed_errors: 10
 kmer_length: 19
 bf_size: 1      # in GB; min 1GB
 nr_hashes: 3

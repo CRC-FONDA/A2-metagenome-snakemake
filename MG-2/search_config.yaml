@@ -9,5 +9,7 @@ kmer_length: 10    # should be 9 < k < 13
 #-----------------------------
 #
 # Parameters of search
-# - the number of allowed errors is inferred from the data simulation
+#
 #-----------------------------
+
+allowed_errors: 5

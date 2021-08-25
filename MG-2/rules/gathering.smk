@@ -40,6 +40,16 @@ rule samtools_index:
         shell:
                 "samtools index {input}"
 
+rule samtools_convert:
+        input:
+                "mapped_reads/all_sorted.bam"
+        output:
+                "mapped_reads/all_sorted.sam"
+        conda:
+                "../../envs/samtools.yaml"
+        shell:
+                "samtools view {input} > {output}"
+
 rule samtools_stats:
         input:
                 reads = "mapped_reads/all_sorted.bam",
