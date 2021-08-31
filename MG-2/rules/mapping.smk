@@ -2,7 +2,8 @@
 # these parameters describe the search
 k = config["kmer_length"]
 ep = round(config["allowed_errors"] / rl * 100) 		# percentage of errors allowed in an approximate match (int)
-
+sp = round(config["strata_width"] / rl * 100)			# percentage of errors from the optimal alignment
+ 
 # This file contains distributed read mapping for simulated data. Simulated data was already created in bins.
 
 # create FM-indices for each bin
@@ -19,7 +20,6 @@ rule dream_FM_index:
 
 
 # call bash script that acts as read mapping distributor
-# TODO: delete distributed read files after not used anymore
 rule search_distributor:
 	input:
 		matches = "hashmap/all.output",
@@ -29,7 +29,6 @@ rule search_distributor:
 	shell:
 		"./scripts/search_distributor.sh {input.matches} {input.all} {bin_nr}"
 
-# TODO: remove hard coded mapping options
 # map reads to bins that were determined by the hashmap k-mer lemma filter
 rule yara_mapper:
 	input:
@@ -42,4 +41,11 @@ rule yara_mapper:
 	params:
 		prefix = "fm_indices/{bin}",
 	shell:
-		"yara_mapper -e {ep} -s 10 -y full -o {output} {params.prefix} {input.reads}"
+		"""
+		# all mapping mode
+		# "yara_mapper -e {ep} -y full -o {output} {params.prefix} {input.reads}"
+		
+		# strata mapping mode
+		yara_mapper -s {sp} -y full -o {output} {params.prefix} {input.reads}
+		rm {input.reads}
+		"""

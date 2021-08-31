@@ -4,8 +4,8 @@
 #-----------------------------
 
 #wf: "MG-R"
-wf: "MG-1"
-#wf: "MG-2"
+#wf: "MG-1"
+wf: "MG-2"
 
 # location of raptor binaries
 raptor_bin_dir: "/home/evelin/metagenomics/raptor_data_simulation/build/bin"
@@ -13,7 +13,7 @@ raptor_bin_dir: "/home/evelin/metagenomics/raptor_data_simulation/build/bin"
 data_out_dir: "/home/evelin/metagenomics/A2-metagenome-snakemake/data"
 
 #-----------------------------
-# Parameters of simulated data
+# Parameters of simulated data.
 #
 # Note: if you want to rerun the same workflow with NEW data you have to change at least one of the following parameters:
 #  * number of bins
@@ -27,4 +27,17 @@ number_of_bins: 8
 errors_per_read: 5       # number of errors; this is the basis for error rate in an approximate match
 read_length: 150
 read_count: 8192        # size of query (count)
+
+#-----------------------------
+# Mason variator parameters.
+#
+# These have been highered to make sure that there is enough of a difference between the haplotypes in each bin.
+# Only if there is a difference between the haplotypes can a read map to multiple haplotypes with a different edit distance.
+#-----------------------------
+
 haplotype_count: 4
+snp_rate: 0.01
+small_indel_rate: 0.001
+
+# boolean variable to divide similar haplotypes between different bins
+mix_bins: 1

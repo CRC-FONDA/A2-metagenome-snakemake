@@ -14,7 +14,11 @@ bin_nr = config["number_of_bins"]
 epr = config["errors_per_read"]
 rl = config["read_length"]
 rc = config["read_count"]
+
+# Parameters for mason variator
 ht = config["haplotype_count"]
+sr = config["snp_rate"]
+ir = config["small_indel_rate"]
 
 # Helper variables
 digits = len(str(bin_nr))
@@ -27,11 +31,16 @@ if os.path.isfile("../data/" + wf + "/" + str(bin_nr) + "/reads_e" + str(epr) + 
 else:
     # Creating simulated data
     import subprocess
-    subprocess.call(['bash', './scripts/simulate.sh', bin_dir, wf_out_dir, str(size), str(bin_nr), str(epr), str(rl), str(rc), str(ht)])
+    subprocess.call(['bash', './scripts/simulate.sh', bin_dir, wf_out_dir, str(size), str(bin_nr), str(epr), str(rl), str(rc), str(ht), str(sr), str(ir)])
 
     # Renaming files; the filenames must have a specific format e.g 4.fastq not 04.fastq
     subprocess.call(['bash', './scripts/rename_fasta.sh', wf, str(bin_nr), padding])
     subprocess.call(['bash', './scripts/rename_fastq.sh', wf, str(bin_nr), str(epr), str(rl), padding])
+
+# Simulate a situation where different bins contain similar sequences.
+# Some reads will align to multiple bins.
+if (config["mix_bins"]==1):
+	subprocess.call(['bash', './scripts/mix_bins.sh', wf, str(bin_nr)])
 
 rule make_all:
 	shell:

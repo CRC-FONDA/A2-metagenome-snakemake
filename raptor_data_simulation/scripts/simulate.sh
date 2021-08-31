@@ -10,16 +10,16 @@ ERRORS=${5}
 READ_LENGTHS=${6}
 READ_COUNT=${7}
 HAPLOTYPE_COUNT=${8}
+SNP_RATE=${9}
+INDEL_RATE=${10}
 
 output_dir=$OUT_DIR/$BIN_NUMBER
 bin_dir=$output_dir/bins
 info_dir=$output_dir/info
-break_dir=$output_dir/breakpoints
 
 mkdir -p $output_dir
 mkdir -p $bin_dir
 mkdir -p $info_dir
-mkdir -p $break_dir
 
 bin_length=$((LENGTH / BIN_NUMBER))
 echo "Simulating $BIN_NUMBER bins with reference length of $LENGTH and bin_length of $bin_length"
@@ -43,7 +43,8 @@ do
        -ir $i \
        -n $HAPLOTYPE_COUNT \
        -of $bin_dir/$(basename $i .fa).fasta \
-       --out-breakpoints $break_dir/$(basename $i .fa).tsv \
+       --snp-rate $SNP_RATE \
+       --small-indel-rate $INDEL_RATE \
        -ov $info_dir/$(basename $i .fa).vcf 
    # &>/dev/null
    	
