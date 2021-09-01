@@ -4,6 +4,7 @@ configfile: "search_config.yaml"
 # Parameters for the search
 k = config["kmer_length"]
 er = config["allowed_errors"] / rl              # this is the allowed error rate for an approximate match
+sp = config["strata_percentage"]
 bf = config["bf_size"]
 h = config["nr_hashes"]
 
@@ -40,9 +41,9 @@ rule dream_mapper:
 		index = expand("fm_indices/{bin}.sa.val", bin = bin_list),
 		reads = "../data/MG-1/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/all.fastq"
 	output:
-		"mapped_reads/all.bam"
+		"mapped_reads/all.sam"
 	params:
 		index_dir = "fm_indices/",
 		t = 8
 	shell:
-		"dream_yara_mapper -t {params.t} -ft bloom -e {er} -s 10 -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"
+		"dream_yara_mapper -t {params.t} -ft bloom -e {er} -s {sp} -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"

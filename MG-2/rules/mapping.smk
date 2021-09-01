@@ -35,7 +35,7 @@ rule yara_mapper:
 		reads = "distributed_reads/{bin}.fastq",
 		index = "fm_indices/{bin}.sa.val"
 	output:
-		"mapped_reads/{bin}.bam"
+		"mapped_reads/{bin}.sam"
 	conda:
 		"../../envs/yara.yaml"
 	params:
@@ -43,9 +43,11 @@ rule yara_mapper:
 	shell:
 		"""
 		# all mapping mode
-		# "yara_mapper -e {ep} -y full -o {output} {params.prefix} {input.reads}"
+		# yara_mapper -e {ep} -y full -o {output} {params.prefix} {input.reads}
 		
 		# strata mapping mode
-		yara_mapper -s {sp} -y full -o {output} {params.prefix} {input.reads}
+		yara_mapper -e {ep} -s {sp} -y full -o {output} {params.prefix} {input.reads}
+
+		# clean up distributed mapping bins
 		rm {input.reads}
 		"""
