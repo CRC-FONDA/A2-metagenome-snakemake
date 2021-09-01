@@ -4,7 +4,8 @@ configfile: "search_config.yaml"
 # Parameters for the search
 k = config["kmer_length"]
 er = config["allowed_errors"] / rl              # this is the allowed error rate for an approximate match
-sp = config["strata_percentage"]
+sp = round(config["strata_width"] / rl * 100)
+
 bf = config["bf_size"]
 h = config["nr_hashes"]
 
