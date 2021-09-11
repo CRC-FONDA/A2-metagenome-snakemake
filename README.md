@@ -65,11 +65,15 @@ Steps of workflow:
 3. Distribute reads by writing e.g all reads that should be mapped to bin 1 to a file
 4. Create an FM-index for each of the bins of the reference
 5. Read the distributed reads and map to the FM-index determined by hashmap pre-filtering
+6. If a read was mapped to multiple bins the strata mapping results have to be consolidated between bins. For match consolidation the mapping results are gathered into one file and filtered based on the best+x cutoff set by the user in the configuration file. 
 
-**NOTE:** The hashmap has to be built from source.
+**NOTE:** The hashmap and match-consolidator have to be built from source and the location of the binaries should be added to $PATH.
 
 Hashmap source code: 
 https://github.com/eaasna/low-memory-prefilter
+
+Match consolidator source code:
+https://github.com/eaasna/match-consolidator
 
 ---
 
