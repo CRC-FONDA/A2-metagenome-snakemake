@@ -12,5 +12,5 @@ kmer_length: 10    # should be 9 < k < 13
 #
 #-----------------------------
 
-allowed_errors: 5       # corresponds to all mapping
-strata_count: 3         # corresponds to strata (best+x) mapping
+allowed_errors: 6       # number of errors
+strata_width: 3         # number of errors; corresponds to x in (best+x) mapping

@@ -3,6 +3,9 @@
 k = config["kmer_length"]
 ep = round(config["allowed_errors"] / rl * 100) 		# percentage of errors allowed in an approximate match (int)
 sp = round(config["strata_width"] / rl * 100)			# percentage of errors from the optimal alignment
+
+print("Percentage of errors: ", ep)
+print("Percentage of errors from the optimal alignment: ", sp)
  
 # This file contains distributed read mapping for simulated data. Simulated data was already created in bins.
 
@@ -42,11 +45,8 @@ rule yara_mapper:
 		prefix = "fm_indices/{bin}",
 	shell:
 		"""
-		# all mapping mode
-		# yara_mapper -e {ep} -y full -o {output} {params.prefix} {input.reads}
-		
 		# strata mapping mode
-		yara_mapper -e {ep} -s {sp} -y full -o {output} {params.prefix} {input.reads}
+		yara_mapper -e {ep} -s {sp} -y full -sm record -o {output} {params.prefix} {input.reads}
 
 		# clean up distributed mapping bins
 		rm {input.reads}

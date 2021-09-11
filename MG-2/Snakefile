@@ -11,13 +11,10 @@ bin_list = [str(i) for i in list(range(0,bin_nr))]
 
 rule make_all:
 	input:
-                #"mapped_reads/idxstats.out",
-		#"mapped_reads/all_sorted.sam"
-		expand("mapped_reads/{bin}.sam", bin=bin_list)
+		"mapped_reads/all_consolidated.sam"
 	shell:
 		"echo 'Done'"
 
 include: "rules/prefiltering.smk"
 include: "rules/mapping.smk"
-#include: "rules/gathering.smk"
-#include: "rules/consolidating.smk"
+include: "rules/consolidating.smk"
