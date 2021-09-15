@@ -7,46 +7,16 @@
 # thread and memory parameters could also be added to the index and stats commands
 # -----------------------------
 
-rule samtools_sort:
+rule samtools_collate:
 	input:
-		"mapped_reads/all.bam"
+		"mapped_reads/all.sam"
 	output:
-		"mapped_reads/all_sorted.bam"
+		"mapped_reads/all_sorted.sam"
 	conda:
 		"../../envs/samtools.yaml"
 	params:
 		t = 1,
 		m = 500000000
 	shell:
-		"samtools sort -m {params.m} -@ {params.t} {input} -o {output}"
+		"samtools collate {input} -o {output}"
 
-rule samtools_index:
-	input:
-		"mapped_reads/all_sorted.bam"
-	output:
-		"mapped_reads/all_sorted.bam.bai"
-	conda:
-		"../../envs/samtools.yaml"
-	shell:
-		"samtools index {input}"
-
-rule samtools_convert:
-	input:
-		"mapped_reads/all_sorted.bam"
-	output:
-		"mapped_reads/all_sorted.sam"
-	conda:
-		"../../envs/samtools.yaml"
-	shell:
-		"samtools view {input} > {output}"
-
-rule samtools_stats:
-	input:
-		reads = "mapped_reads/all_sorted.bam",
-		index = "mapped_reads/all_sorted.bam.bai"
-	output:
-		"mapped_reads/idxstats.out"
-	conda:
-		"../../envs/samtools.yaml"
-	shell:
-		"samtools idxstats {input.reads} > {output}"
