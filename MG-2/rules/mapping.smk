@@ -4,8 +4,8 @@ k = config["kmer_length"]
 ep = round(config["allowed_errors"] / rl * 100) 		# percentage of errors allowed in an approximate match (int)
 sp = round(config["strata_width"] / rl * 100)			# percentage of errors from the optimal alignment
 
-print("Percentage of errors: ", ep)
-print("Percentage of errors from the optimal alignment: ", sp)
+#print("Percentage of errors: ", ep)
+#print("Percentage of errors from the optimal alignment: ", sp)
  
 # This file contains distributed read mapping for simulated data. Simulated data was already created in bins.
 
