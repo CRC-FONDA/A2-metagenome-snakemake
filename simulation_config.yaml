@@ -5,7 +5,8 @@
 
 #wf: "MG-R"
 #wf: "MG-1"
-wf: "MG-2"
+#wf: "MG-2"
+wf: "MG-3"
 
 # location of raptor binaries
 raptor_bin_dir: "/home/evelin/metagenomics/raptor_data_simulation/build/bin"
@@ -22,8 +23,8 @@ data_out_dir: "/home/evelin/metagenomics/A2-metagenome-snakemake/data"
 #
 #-----------------------------
 
-ref_size: 81920        # size of reference in bytes? 4*2^20 = 4MiB
-number_of_bins: 64
+ref_size: 102400        # size of reference in bytes? 4*2^20 = 4MiB
+number_of_bins: 8
 errors_per_read: 5       # number of errors; this is the basis for error rate in an approximate match
 read_length: 150
 read_count: 1024        # size of query (count)
