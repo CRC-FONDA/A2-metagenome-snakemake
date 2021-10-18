@@ -7,6 +7,16 @@
 # thread and memory parameters could also be added to the index and stats commands
 # -----------------------------
 
+rule samtools_merge:
+	input:
+		expand("mapped_reads/{bin}.sam", bin=bin_list)
+	output:
+		"mapped_reads/all.sam"
+	conda:
+		"../../envs/samtools.yaml"
+	shell:
+		"samtools merge {input} -o {output}"
+
 rule samtools_collate:
 	input:
 		"mapped_reads/all.sam"
@@ -14,9 +24,6 @@ rule samtools_collate:
 		"mapped_reads/all_sorted.sam"
 	conda:
 		"../../envs/samtools.yaml"
-	params:
-		t = 1,
-		m = 500000000
 	shell:
 		"samtools collate {input} -o {output}"
 
