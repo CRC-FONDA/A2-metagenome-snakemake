@@ -75,6 +75,21 @@ https://github.com/eaasna/low-memory-prefilter
 Match consolidator source code:
 https://github.com/eaasna/match-consolidator
 
+### MG-3
+![directed acyclic graph for MG-3](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-3/dag.png)
+
+This workflow uses the same tools as MG-1 but allows to customise the number of jobs created for the workflow steps. This is useful for running the workflow on the cluster.
+
+Steps of workflow:
+1. Create an IBF over the simulated reference data (one job)
+2. Create an FM-index for each of the bins of the reference (default one job per bin)
+3. Map each read to the FM-index determined by IBF pre-filtering (default one job per bin) 
+
+**NOTE:** DREAM-Yara is not available through conda and has to be built from source. Also add location of DREAM-Yara binaries to $PATH.
+
+DREAM-Yara source code:
+https://github.com/temehi/dream_yara
+
 ---
 
 <details>
