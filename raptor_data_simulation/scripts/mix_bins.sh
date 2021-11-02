@@ -4,6 +4,8 @@ p="../data/${1}/${2}/bins"
 echo "${p}"
 cd $p
 
+echo "mixing reads..."
+
 awk '{f=NR ".0"; print ">" $0 > f}' RS='>' 0.fasta
 awk '{f=NR ".1"; print ">" $0 > f}' RS='>' 1.fasta
 rm 0.fasta 1.fasta 1.0 1.1
