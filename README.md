@@ -22,7 +22,7 @@ Other useful flags:
 
 ### raptor_data_simulation
 Simulating DNA sequences with https://github.com/eseiler/raptor_data_simulation.
-Run this workflow before running any of the MG-* workflows. The data simulation parameters are set in `simulation_config.yaml`. Both MG-1 and MG-2 have a separate configuration file called `search_config.yaml` where prefiltering and search parameters should be set. 
+Run this workflow before running any of the MG-* workflows. The data simulation parameters are set in `simulation_config.yaml`. All MG-x workflows have a separate configuration file called `search_config.yaml` where prefiltering and search parameters should be set. 
 
 **NOTE:** Raptor data simulation has to be built from source. 
 
@@ -89,6 +89,17 @@ Steps of workflow:
 
 DREAM-Yara source code:
 https://github.com/temehi/dream_yara
+
+### MG-4
+![directed acyclic graph for MG-4](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-4/dag.png)
+
+This workflow is identical to MG-3 with the difference that the the user can set the number of read files in `simulation_config.yaml`. The example graph above shows a workflow run where:
+- number of bins = 8
+- number of read files = 4
+
+which means there are 8 jobs for the FM-index building step and 4 jobs for the mapping step. 
+
+**NOTE:** that the total number of reads has to be divisible by the chosen number of read files.  
 
 ---
 
