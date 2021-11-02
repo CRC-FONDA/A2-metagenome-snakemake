@@ -52,5 +52,5 @@ mix_bins: 1     # NOT relevant for MG-4
 # Note that it must hold that (read_count % read_file_count) == 0
 #-----------------------------
 
-read_file_count: 64
+read_file_count: 4
 
