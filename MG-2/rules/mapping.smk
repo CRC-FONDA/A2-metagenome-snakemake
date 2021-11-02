@@ -10,7 +10,7 @@ sp = round(config["strata_width"] / rl * 100)			# percentage of errors from the 
 # This file contains distributed read mapping for simulated data. Simulated data was already created in bins.
 
 # create FM-indices for each bin
-rule dream_FM_index:
+rule FM_index:
 	input:
 		bins = expand("../data/MG-2/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
