@@ -78,28 +78,17 @@ https://github.com/eaasna/match-consolidator
 ### MG-3
 ![directed acyclic graph for MG-3](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-3/dag.png)
 
-This workflow uses the same tools as MG-1 but allows to customise the number of jobs created for the workflow steps. This is useful for running the workflow on the cluster.
+This workflow uses the same tools as MG-1 but divides the FM-index creation and read mapping between multiple jobs (as opposed to one multithreaded job). This is useful for running the workflow on the cluster.
 
 Steps of workflow:
 1. Create an IBF over the simulated reference data (one job)
 2. Create an FM-index for each of the bins of the reference (one job per bin)
-3. Map each read to the FM-index determined by IBF pre-filtering (default one job per bin for simulated data, could be changed) 
+3. Map each read to the FM-index determined by IBF pre-filtering (one job per bin)
 
 **NOTE:** DREAM-Yara is not available through conda and has to be built from source. Also add location of DREAM-Yara binaries to $PATH.
 
 DREAM-Yara source code:
 https://github.com/temehi/dream_yara
-
-### MG-4
-![directed acyclic graph for MG-4](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-4/dag.png)
-
-This workflow is identical to MG-3 with the difference that the the user can set the number of read files in `simulation_config.yaml`. The example graph above shows a workflow run where:
-- number of bins = 8
-- number of read files = 4
-
-which means there are 8 jobs for the FM-index building step and 4 jobs for the mapping step. 
-
-**NOTE:** that the total number of reads has to be divisible by the chosen number of read files.  
 
 ---
 
