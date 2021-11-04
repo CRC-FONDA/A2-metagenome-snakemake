@@ -49,6 +49,8 @@ Steps of workflow:
 2. Create an FM-index for each of the bins of the reference
 3. Map each read to the FM-index determined by IBF pre-filtering. The read distribution is done in-memory.
 
+![job counts for MG-1](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-1/job_counts.png)
+
 **NOTE:** DREAM-Yara is not available through conda and has to be built from source. Also add location of DREAM-Yara binaries to $PATH.
 
 DREAM-Yara source code:
@@ -67,6 +69,8 @@ Steps of workflow:
 5. Read the distributed reads and map to the FM-index determined by hashmap pre-filtering
 6. If a read was mapped to multiple bins the strata mapping results have to be consolidated between bins. For match consolidation the mapping results are gathered into one file and filtered based on the best+x cutoff set by the user in the configuration file. 
 
+![job counts for MG-2](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-2/job_counts.png)
+
 **NOTE:** The hashmap and match-consolidator have to be built from source and the location of the binaries should be added to $PATH.
 
 Hashmap source code: 
@@ -84,6 +88,8 @@ Steps of workflow:
 1. Create an IBF over the simulated reference data (one job)
 2. Create an FM-index for each of the bins of the reference (one job per bin)
 3. Map each read to the FM-index determined by IBF pre-filtering (one job per bin)
+
+![job counts for MG-3](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-3/job_counts.png)
 
 **NOTE:** DREAM-Yara is not available through conda and has to be built from source. Also add location of DREAM-Yara binaries to $PATH.
 
