@@ -9,39 +9,54 @@ size = config["ref_size"]
 bin_nr = config["number_of_bins"]
 epr = config["errors_per_read"]
 rl = config["read_length"]
-rc = config["read_count"]
+rpg = config["reads_per_genome"]
 
 # Parameters for mason variator
 ht = config["haplotype_count"]
 sr = config["snp_rate"]
 ir = config["small_indel_rate"]
 
+# An equal number of reads is sampled from each genome
+rc = rpg * ht * bin_nr
+
 # Helper variables
 digits = len(str(bin_nr))
 padding = "".zfill(digits)
+bins = [*range(0, bin_nr - 1, 1)]
 
-# Checking if data was already simulated
-import os.path
-if os.path.isfile(str(out_dir) + "/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/0.fastq"):
-    print ("Skipping data simulation.")
+rule simulate:		
+	output:
+		bins = expand("{out}/{nr}/bins/{bin}.fasta", bin=bins, out=out_dir, nr=bin_nr),
+		reads = expand("{out}/{nr}/reads_e{e}_{l}/{bin}.fastq", bin=bins, out=out_dir, nr=bin_nr, e=epr, l=rl)
+	params: 
+		t = 8
+	resources:
+		nodelist = "cmp[230]"
+	run:
+		# Checking if data was already simulated
+		import os.path
+		if os.path.isfile(str(out_dir) + "/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/0.fastq"):
+			print ("Skipping data simulation.")
+		else:
+			# Creating simulated data
+			import subprocess
+			subprocess.call(['bash', './scripts/simulate.sh', bin_dir, out_dir, str(size), str(bin_nr), str(epr), str(rl), str(rc), str(ht), str(sr), str(ir)])
 
-else:
-    # Creating simulated data
-    import subprocess
-    subprocess.call(['bash', './scripts/simulate.sh', bin_dir, out_dir, str(size), str(bin_nr), str(epr), str(rl), str(rc), str(ht), str(sr), str(ir)])
+			# Renaming bin files; the filenames must have a specific format e.g 4.fasta not 04.fasta
+    			subprocess.call(['bash', './scripts/rename_fasta.sh', out_dir, str(bin_nr), padding])
 
-    # Renaming bin files; the filenames must have a specific format e.g 4.fasta not 04.fasta
-    subprocess.call(['bash', './scripts/rename_fasta.sh', out_dir, str(bin_nr), padding])
-    
-    # Renaming read files
-    subprocess.call(['bash', './scripts/rename_fastq.sh', out_dir, str(bin_nr), str(epr), str(rl), padding])
+			# Renaming read files
+			subprocess.call(['bash', './scripts/rename_fastq.sh', out_dir, str(bin_nr), str(epr), str(rl), padding])
 
-    # Simulate a situation where different bins contain similar sequences.
-    # Some reads will align to multiple bins.
-    if (config["mix_bins"]==1):
-        subprocess.call(['bash', './scripts/mix_bins.sh', out_dir, str(bin_nr)])
+			# Simulate a situation where different bins contain similar sequences.
+    			# Some reads will align to multiple bins.
+    			if (config["mix_bins"]==1):
+				subprocess.call(['bash', './scripts/mix_bins.sh', out_dir, str(bin_nr)])
 
 rule make_all:
+	input:
+		bins = expand("{out}/{nr}/bins/{bin}.fasta", bin=bins, out=out_dir, nr=bin_nr),
+		reads = expand("{out}/{nr}/reads_e{e}_{l}/{bin}.fastq", bin = bins, out=out_dir, nr=bin_nr, e=epr, l=rl)	
 	params:
 		t = 1
 	resources:
