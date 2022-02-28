@@ -1,10 +1,10 @@
 #!/bin/bash
 
-p="../data/${1}/${2}/bins"
+p="${1}/${2}/bins"
 echo "${p}"
 cd $p
 
-echo "mixing reads..."
+echo "mixing haplotypes between bins..."
 
 awk '{f=NR ".0"; print ">" $0 > f}' RS='>' 0.fasta
 awk '{f=NR ".1"; print ">" $0 > f}' RS='>' 1.fasta

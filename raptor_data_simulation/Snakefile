@@ -1,13 +1,9 @@
 # All parameters are set in config.yaml
 configfile: "../simulation_config.yaml"
 
-# Chosen workflow
-wf = config["wf"]
-
 # Parameters for data simulation 
 bin_dir = config["raptor_bin_dir"]
 out_dir = config["data_out_dir"]
-wf_out_dir = out_dir + "/" + wf
 
 size = config["ref_size"]
 bin_nr = config["number_of_bins"]
@@ -20,41 +16,35 @@ ht = config["haplotype_count"]
 sr = config["snp_rate"]
 ir = config["small_indel_rate"]
 
-# Parameters for MG-4
-nr_rf = config["read_file_count"]
-
 # Helper variables
 digits = len(str(bin_nr))
 padding = "".zfill(digits)
 
 # Checking if data was already simulated
 import os.path
-if os.path.isfile("../data/" + wf + "/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/0.fastq"):
+if os.path.isfile(str(out_dir) + "/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/0.fastq"):
     print ("Skipping data simulation.")
 
 else:
     # Creating simulated data
     import subprocess
-    subprocess.call(['bash', './scripts/simulate.sh', bin_dir, wf_out_dir, str(size), str(bin_nr), str(epr), str(rl), str(rc), str(ht), str(sr), str(ir)])
+    subprocess.call(['bash', './scripts/simulate.sh', bin_dir, out_dir, str(size), str(bin_nr), str(epr), str(rl), str(rc), str(ht), str(sr), str(ir)])
 
     # Renaming bin files; the filenames must have a specific format e.g 4.fasta not 04.fasta
-    subprocess.call(['bash', './scripts/rename_fasta.sh', wf, str(bin_nr), padding])
+    subprocess.call(['bash', './scripts/rename_fasta.sh', out_dir, str(bin_nr), padding])
     
-    if (wf != "MG-4"):
-        # Renaming read files
-        subprocess.call(['bash', './scripts/rename_fastq.sh', wf, str(bin_nr), str(epr), str(rl), padding])
+    # Renaming read files
+    subprocess.call(['bash', './scripts/rename_fastq.sh', out_dir, str(bin_nr), str(epr), str(rl), padding])
 
-        # Simulate a situation where different bins contain similar sequences.
-        # Some reads will align to multiple bins.
-        if (config["mix_bins"]==1):
-            subprocess.call(['bash', './scripts/mix_bins.sh', wf, str(bin_nr)])
-    else:
-	# Create a custom number of read files
-        if (rc % nr_rf != 0):
-            print("ERROR! The number of reads must be divisible by the chosen number of read files!")
-        else:
-            subprocess.call(['bash', './scripts/custom_read_files.sh', wf, str(bin_nr), str(epr), str(rl), str(nr_rf)])
+    # Simulate a situation where different bins contain similar sequences.
+    # Some reads will align to multiple bins.
+    if (config["mix_bins"]==1):
+        subprocess.call(['bash', './scripts/mix_bins.sh', out_dir, str(bin_nr)])
 
 rule make_all:
+	params:
+		t = 1
+	resources:
+		nodelist = "cmp[227]"
 	shell:
 		"echo 'Done'"

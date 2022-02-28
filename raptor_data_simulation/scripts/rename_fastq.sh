@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-p="../data/${1}/${2}/reads_e${3}_${4}"
+p="${1}/${2}/reads_e${3}_${4}"
 echo "${p}"
 cd $p
 
