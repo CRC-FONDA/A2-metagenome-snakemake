@@ -4,10 +4,6 @@ import os.path
 # All parameters are set in config.yaml
 configfile: "../simulation_config.yaml"
 
-# Parameters for data simulation 
-bin_dir = config["raptor_bin_dir"]
-out_dir = config["data_out_dir"]
-
 # Simulating reference
 part_nr = config["reference_parts"]
 length = config["ref_size"]
@@ -23,53 +19,49 @@ rpg = config["reads_per_genome"]
 rc = rpg * ht * bin_nr
 
 # Helper variables
-bins = [*range(0, bin_nr - 1, 1)]
+bins = [*range(0, bin_nr, 1)]
 parts =[*range(0, part_nr, 1)]
 
 rule make_all:
 	input:
-		reads = expand("{out}/part_{part}/reads/{bin}.fastq", out=out_dir, part=parts, bin=bins)
-#expand("{out}/part_{part}/ref.fasta", out=out_dir, part=parts)
+		reads = expand("../../NO_BACKUP/simulated_metagenome/reads/{bin}.fastq", bin=bins)
 	params:
 		t = 1
 	resources:
-		nodelist = "cmp[227]"
+		nodelist = "cmp[241]"
 	shell:
 		"echo 'Done'"
 
 rule create_ref:		
 	output:
-		"{out}/part_{part}/ref.fasta"
+		"../../NO_BACKUP/simulated_metagenome/bins/ref.fasta"
 	params:
-		t = 11
+		t = 1
 	resources:
 		nodelist = "cmp[241]"
 	shell:
-		"./scripts/create_ref.sh {bin_dir} {out_dir} {length} {wildcards.part}"
+		"./scripts/create_ref.sh {length}"
 
 rule divide_into_bins:		
 	input:
-		"{out}/part_{part}/ref.fasta"
+		"../../NO_BACKUP/simulated_metagenome/bins/ref.fasta"
 	output:
-		expand("{out}/part_{part}/bins/{bin}.fasta", out=out_dir, part=parts, bin=bins)
+		expand("../../NO_BACKUP/simulated_metagenome/bins/{bin}.fasta", bin=bins)
+	params:
+		t = 1
+	resources:
+		nodelist = "cmp[241]"
+	shell:
+		"./scripts/divide_into_bins.sh {length} {bin_nr} {ht}"
+
+rule sample_reads:
+	input:
+		"../../NO_BACKUP/simulated_metagenome/bins/{bin}.fasta"
+	output:
+		"../../NO_BACKUP/simulated_metagenome/reads/{bin}.fastq"
 	params:
 		t = 2
 	resources:
 		nodelist = "cmp[241]"
 	shell:
-		"./scripts/divide_into_bins.sh {bin_dir} {out_dir} {length} {wildcard.part} {bin_nr} {ht}"
-
-rule sample_reads:
-	input:
-		"{out}/part_{part}/bins/{bin}.fasta"
-	output:
-		"{out}/part_{part}/reads/{bin}.fastq"
-	params:
-		t = 40
-	resources:
-		nodelist = "cmp[241]"
-	shell:
-		"""
-		./scripts/sample_reads.sh {bin_dir} {out_dir} {wildcard.part} {bin_nr} {epr} {rl} {rc} {ht}
-		./scripts/mix_bins.sh {out_dir} {wildcard.part}
-		"""
+		"./scripts/sample_reads.sh {bin_nr} {epr} {rl} {rc} {ht}"

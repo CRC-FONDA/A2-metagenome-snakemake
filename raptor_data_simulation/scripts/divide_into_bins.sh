@@ -1,29 +1,24 @@
 #!/usr/bin/env bash
 set -e
 
-BINARY_DIR=${1}
-OUT_DIR=${2}
-LENGTH=${3} 	# 4*2^20 =  64MiB
+BINARY_DIR=/home/evelia95/raptor_data_simulation/build/bin
+OUT_DIR=/home/evelia95/NO_BACKUP/simulated_metagenome
+LENGTH=${1} 	# 4*2^20 =  64MiB
 SEED=42 # was 20181406 before, but was hardcoded to 42 in seqan
-PARTS=${4}
-BIN_NUMBER=${5}
-HAPLOTYPE_COUNT=${6}
+BIN_NUMBER=${2}
+HAPLOTYPE_COUNT=${3}
 
-output_dir=$OUT_DIR/part_$PARTS
+output_dir=$OUT_DIR
 bin_dir=$output_dir/bins
 info_dir=$output_dir/info
-
-mkdir -p $output_dir
-mkdir -p $bin_dir
-mkdir -p $info_dir
 
 bin_length=$((LENGTH / BIN_NUMBER))
 
 # Evenly distribute it over bins
 echo "Splitting genome into $BIN_NUMBER bins with bin_length of $bin_length"
-$BINARY_DIR/split_sequence --input $output_dir/ref.fasta --length $bin_length --parts $BIN_NUMBER
+$BINARY_DIR/split_sequence --input $bin_dir/ref.fasta --length $bin_length --parts $BIN_NUMBER
 # We do not need the reference anymore
-rm $output_dir/ref.fasta
+rm $bin_dir/ref.fasta
 # Rename the bins to .fa
 for i in $bin_dir/*.fasta; do mv $i $bin_dir/$(basename $i .fasta).fa; done
 # Simulate haplotypes for each bin
@@ -42,18 +37,19 @@ do
 done
 
 echo "renaming bin files"
-for file in $bin_dir/bin_*.fasta; do
+cd $bin_dir
+for file in bin_*.fasta; do
 	mv "$file" "${file#bin_}";
 done;
-for file in $bin_dir/0000[0-9]*.fasta; do
-	mv "$file" "${file#0}";
-done;
-for file in $bin_dir/000[0-9]*.fasta; do
-	mv "$file" "${file#0}";
-done;
-for file in $bin_dir/00[0-9]*.fasta; do
-	mv "$file" "${file#0}";
-done;
-for file in $bin_dir/0[0-9]*.fasta; do
+#for file in 0000[0-9]*.fasta; do
+#	mv "$file" "${file#0}";
+#done;
+#for file in 000[0-9]*.fasta; do
+#	mv "$file" "${file#0}";
+#done;
+#for file in 00[0-9]*.fasta; do
+#	mv "$file" "${file#0}";
+#done;
+for file in 0[0-9]*.fasta; do
 	mv "$file" "${file#0}";
 done;

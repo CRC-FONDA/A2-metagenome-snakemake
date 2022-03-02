@@ -14,11 +14,11 @@ data_out_dir: "/home/evelia95/NO_BACKUP/simulated_metagenome"
 #-----------------------------
 
 reference_parts: 10 
-ref_size: 104857600    # size of reference in bytes? 350*2^30 = 350GiB
+ref_size: 20971520    # size of reference in bytes? 350*2^30 = 350GiB
 number_of_bins: 10
 errors_per_read: 5     # number of errors; this is the basis for error rate in an approximate match
 read_length: 150
-reads_per_genome: 10000        # 10000 * nr_bins * haplotype_count = query_size
+reads_per_genome: 1000        # 10000 * nr_bins * haplotype_count = query_size
 
 #-----------------------------
 # Mason variator parameters.

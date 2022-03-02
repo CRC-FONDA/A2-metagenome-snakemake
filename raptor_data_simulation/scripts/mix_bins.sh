@@ -1,10 +1,11 @@
 #!/bin/bash
 
-p="${1}/part_${2}/bins"
-echo "${p}"
-cd $p
+OUT_DIR=/home/evelia95/NO_BACKUP/simulated_metagenome/bins
 
-echo "mixing haplotypes between bins..."
+echo "${OUT_DIR}"
+cd $OUT_DIR
+
+echo "Mixing haplotypes between bins..."
 
 awk '{f=NR ".0"; print ">" $0 > f}' RS='>' 0.fasta
 awk '{f=NR ".1"; print ">" $0 > f}' RS='>' 1.fasta
