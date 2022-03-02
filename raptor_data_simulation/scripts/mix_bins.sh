@@ -1,6 +1,6 @@
 #!/bin/bash
 
-p="${1}/${2}/bins"
+p="${1}/part_${2}/bins"
 echo "${p}"
 cd $p
 

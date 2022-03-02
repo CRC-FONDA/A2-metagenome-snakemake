@@ -1,0 +1,48 @@
+import subprocess
+import os.path
+
+# All parameters are set in config.yaml
+configfile: "../simulation_config.yaml"
+
+# Simulating reference
+part_nr = config["reference_parts"]
+length = config["ref_size"]
+bin_nr = config["number_of_bins"]
+ht = config["haplotype_count"]
+
+# Simulating reads
+epr = config["errors_per_read"]
+rl = config["read_length"]
+rpg = config["reads_per_genome"]
+
+sr = config["snp_rate"]
+sir = config["small_indel_rate"]
+
+# An equal number of reads is sampled from each genome
+rc = rpg * ht * bin_nr
+
+# Helper variables
+bins = [*range(0, bin_nr - 1, 1)]
+parts =[*range(0, part_nr, 1)]
+
+rule make_all:
+	input:
+		expand("../../NO_BACKUP/simulated_metagenome/{part}/reads_e{e}_{l}/{bin}.fastq", part=parts, e=epr, l=rl, bin=bins),
+		expand("../../NO_BACKUP/simulated_metagenome/{part}/bins/{bin}.fasta", part=parts, bin=bins)
+	params:
+		t = 1
+	resources:
+		nodelist = "cmp[227]"
+	shell:
+		"echo 'Done'"
+
+rule simulate:		
+	output:
+		"../../NO_BACKUP/simulated_metagenome/{part}/bins/{bin}.fasta",
+		"../../NO_BACKUP/simulated_metagenome/{part}/reads_e{e}_{l}.fastq"
+	params:
+		t = 11
+	resources:
+		nodelist = "cmp[241]"
+	shell:
+		"./scripts/simulate.sh {length} {bin_nr} {wildcards.part} {epr} {rl} {rc} {ht} {sr} {sir}"

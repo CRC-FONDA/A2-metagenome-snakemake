@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
 set -e
 
-BINARY_DIR=${1}
-OUT_DIR=${2}
-LENGTH=${3} 	# 4*2^20 =  64MiB
+BINARY_DIR="/home/evelia95/raptor_data_simulation/build/bin"
+OUT_DIR="/home/evelia95/NO_BACKUP/simulated_metagenome"
+LENGTH=${1} 	# 4*2^20 =  64MiB
 SEED=42 # was 20181406 before, but was hardcoded to 42 in seqan
-BIN_NUMBER=${4}
-ERRORS=${5}
-READ_LENGTHS=${6}
-READ_COUNT=${7}
-HAPLOTYPE_COUNT=${8}
-SNP_RATE=${9}
-INDEL_RATE=${10}
+BIN_NUMBER=${2}
+PART=${3}
+ERRORS=${4}
+READ_LENGTHS=${5}
+READ_COUNT=${6}
+HAPLOTYPE_COUNT=${7}
+SNP_RATE=${8}
+INDEL_RATE=${9}
 
-output_dir=$OUT_DIR/$BIN_NUMBER
+output_dir=$OUT_DIR/$BIN_NUMBER/$PART
 bin_dir=$output_dir/bins
 info_dir=$output_dir/info
 
