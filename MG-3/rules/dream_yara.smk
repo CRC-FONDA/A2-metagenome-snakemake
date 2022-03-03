@@ -15,11 +15,12 @@ h = config["nr_hashes"]
 # create an IBF from clustered database
 rule dream_IBF:
 	input:
-		expand("../data/MG-3/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
+		expand("{params.dir}/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
-		"IBF.filter"
+		"{params.dir}/IBF.filter"
 	params:
-		t = 8
+		t = 8,
+		dir = "../../NO_BACKUP/simulated_metagenome/MG3"
 	shell:
 		"dream_yara_build_filter --threads {params.t} --kmer-size {k} --filter-type bloom --bloom-size {bf} --num-hash {h} --output-file {output} {input}"
 
@@ -28,12 +29,14 @@ rule dream_IBF:
 # this can be adjusted with command line arguments (see README)
 rule dream_FM_index:
 	input:
-		"../data/MG-3/" + str(bin_nr) + "/bins/{bin}.fasta"
+		"{params.dir}/" + str(bin_nr) + "/bins/{bin}.fasta"
 	output:
-		"fm_indices/{bin}.sa.val"
+		"{params.dir}/fm_indices/{bin}.sa.val"
 	params:
-		outdir = "fm_indices/{bin}.",
-		t = 4
+		outdir = "../../NO_BACKUP/simulated_metagenome/MG3/fm_indices/{bin}.",
+		t = 4,
+		dir = "../../NO_BACKUP/simulated_metagenome/MG3"
+
 	shell:
 		"""
 		dream_yara_indexer --threads {params.t} --output-prefix {params.outdir} {input}
@@ -47,13 +50,14 @@ rule dream_FM_index:
 # map reads to bins that pass the IBF prefilter
 rule dream_mapper:
 	input:
-		filter = "IBF.filter",
-		index = expand("fm_indices/{bin}.sa.val", bin=bin_list),
-		reads = "../data/MG-3/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/{bin}.fastq"
+		filter = "{params.dir}/IBF.filter",
+		index = expand("{params.dir}/fm_indices/{bin}.sa.val", bin=bin_list),
+		reads = "{params.dir}/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/{bin}.fastq"
 	output:
-		"mapped_reads/{bin}.sam"
+		"{params.dir}/mapped_reads/{bin}.sam"
 	params:
-		index_dir = "fm_indices/",
-		t = 4
+		index_dir = "{params.dir}/fm_indices/",
+		t = 4,
+		dir = "../../NO_BACKUP/simulated_metagenome/MG3"
 	shell:
 		"dream_yara_mapper -t {params.t} -ft bloom -e {er} -s {sp} -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"

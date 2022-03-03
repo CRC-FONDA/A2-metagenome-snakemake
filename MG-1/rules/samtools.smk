@@ -9,14 +9,15 @@
 
 rule samtools_collate:
 	input:
-		"mapped_reads/all.sam"
+		"{params.dir}/mapped_reads/all.sam"
 	output:
-		"mapped_reads/all_sorted.sam"
+		"{params.dir}/mapped_reads/all_sorted.sam"
 	conda:
 		"../../envs/samtools.yaml"
 	params:
-		t = 1,
-		m = 500000000
+		t = 1
+		#m = 500000000,
+		dir = "../../NO_BACKUP/simulated_metagenome/MG1"
 	shell:
 		"samtools collate {input} -o {output}"
 
