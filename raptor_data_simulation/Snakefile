@@ -5,7 +5,6 @@ import os.path
 configfile: "../simulation_config.yaml"
 
 # Simulating reference
-part_nr = config["reference_parts"]
 length = config["ref_size"]
 bin_nr = config["number_of_bins"]
 ht = config["haplotype_count"]
@@ -20,7 +19,6 @@ rc = rpg * ht * bin_nr
 
 # Helper variables
 bins = [*range(0, bin_nr, 1)]
-parts =[*range(0, part_nr, 1)]
 
 rule make_all:
 	input:

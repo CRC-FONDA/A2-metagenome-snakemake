@@ -18,7 +18,7 @@ bin_length=$((LENGTH / BIN_NUMBER))
 echo "Splitting genome into $BIN_NUMBER bins with bin_length of $bin_length"
 $BINARY_DIR/split_sequence --input $bin_dir/ref.fasta --length $bin_length --parts $BIN_NUMBER
 # We do not need the reference anymore
-rm $bin_dir/ref.fasta
+# rm $bin_dir/ref.fasta
 # Rename the bins to .fa
 for i in $bin_dir/*.fasta; do mv $i $bin_dir/$(basename $i .fasta).fa; done
 # Simulate haplotypes for each bin
@@ -44,12 +44,12 @@ done;
 #for file in 0000[0-9]*.fasta; do
 #	mv "$file" "${file#0}";
 #done;
-#for file in 000[0-9]*.fasta; do
-#	mv "$file" "${file#0}";
-#done;
-#for file in 00[0-9]*.fasta; do
-#	mv "$file" "${file#0}";
-#done;
+for file in 000[0-9]*.fasta; do
+	mv "$file" "${file#0}";
+done;
+for file in 00[0-9]*.fasta; do
+	mv "$file" "${file#0}";
+done;
 for file in 0[0-9]*.fasta; do
 	mv "$file" "${file#0}";
 done;
