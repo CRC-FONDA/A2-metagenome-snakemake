@@ -16,7 +16,9 @@ rule make_all:
 		t = 1,
 		dir = "../../NO_BACKUP/simulated_metagenome/MG3"
 	resources:
-		nodelist = "cmp[201]"
+		nodelist = "cmp[227]"
+	benchmark:
+		"{params.dir}/benchmarks/all.txt"
 	shell:
 		"echo 'Done'"
 

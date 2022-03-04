@@ -23,6 +23,8 @@ rule dream_IBF:
 		dir = "../../NO_BACKUP/simulated_metagenome/MG1"
 	resources:
 		nodelist = "cmp[249]"
+	benchmark:
+		"{params.dir}/benchmarks/IBF.txt"
 	shell:
 		"dream_yara_build_filter --threads {params.t} --kmer-size {k} --filter-type bloom --bloom-size {bf} --num-hash {h} --output-file {output} {input}"
 
@@ -38,6 +40,8 @@ rule dream_FM_index:
 		dir = "../../NO_BACKUP/simulated_metagenome/MG1"
 	resources:
 		nodelist = "cmp[249]"
+	benchmark:
+		"{params.dir}/benchmarks/fm_indices.txt"
 	shell:
 		"dream_yara_indexer --threads {params.t} --output-prefix {params.outdir} {input.bins}"
 	
@@ -55,5 +59,7 @@ rule dream_mapper:
 		dir = "../../NO_BACKUP/simulated_metagenome/MG1"
 	resources:
 		nodelist = "cmp[249]"
+	benchmark:
+		"{params.dir}/benchmarks/mapping.txt"
 	shell:
 		"dream_yara_mapper -t {params.t} -ft bloom -e {er} -s {sp} -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"

@@ -19,8 +19,12 @@ rule dream_IBF:
 	output:
 		"{params.dir}/IBF.filter"
 	params:
-		t = 8,
+		t = 40,
 		dir = "../../NO_BACKUP/simulated_metagenome/MG3"
+	resources:
+		nodelist = "cmp[249]"
+	benchmark:
+		"{params.dir}/benchmarks/IBF.txt"
 	shell:
 		"dream_yara_build_filter --threads {params.t} --kmer-size {k} --filter-type bloom --bloom-size {bf} --num-hash {h} --output-file {output} {input}"
 
@@ -36,7 +40,10 @@ rule dream_FM_index:
 		outdir = "../../NO_BACKUP/simulated_metagenome/MG3/fm_indices/{bin}.",
 		t = 4,
 		dir = "../../NO_BACKUP/simulated_metagenome/MG3"
-
+	benchmark:
+		"{params.dir}/benchmarks/fm_{bin}.txt"
+	resources:
+		nodelist = lambda wildcards : "cmp[216]" if int(wildcards.bin) < 342 else ("cmp[217]" if int(wildcards.bin) < 683 else "cmp[218]")
 	shell:
 		"""
 		dream_yara_indexer --threads {params.t} --output-prefix {params.outdir} {input}
@@ -59,5 +66,9 @@ rule dream_mapper:
 		index_dir = "{params.dir}/fm_indices/",
 		t = 4,
 		dir = "../../NO_BACKUP/simulated_metagenome/MG3"
+	resources:
+		nodelist = lambda wildcards : "cmp[213]" if int(wildcards.bin) < 342 else ("cmp[214]" if int(wildcards.bin) < 683 else "cmp[215]")
+	benchmark:
+		"{params.dir}/benchmarks/mapped_{bin}.txt"
 	shell:
 		"dream_yara_mapper -t {params.t} -ft bloom -e {er} -s {sp} -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"

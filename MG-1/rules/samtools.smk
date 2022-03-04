@@ -15,9 +15,14 @@ rule samtools_collate:
 	conda:
 		"../../envs/samtools.yaml"
 	params:
-		t = 1
+		t = 10,
 		#m = 500000000,
-		dir = "../../NO_BACKUP/simulated_metagenome/MG1"
+		dir = "../../NO_BACKUP/simulated_metagenome/MG1",
+		extra_threads = 9
+	resources:
+		nodelist = "cmp[250]"
+	benchmark:
+		"{params.dir}/benchmarks/collate.txt"
 	shell:
-		"samtools collate {input} -o {output}"
+		"samtools collate {input} -o {output} --threads {params.extra_threads}"
 

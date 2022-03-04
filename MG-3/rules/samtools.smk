@@ -9,21 +9,39 @@
 
 rule samtools_merge:
 	input:
-		expand("mapped_reads/{bin}.sam", bin=bin_list)
+		expand("{params.dir}/mapped_reads/{bin}.sam", bin=bin_list)
 	output:
-		"mapped_reads/all.sam"
+		"{params.dir}/mapped_reads/all.sam"
 	conda:
 		"../../envs/samtools.yaml"
+        params:
+                t = 10,
+                #m = 500000000,
+                dir = "../../NO_BACKUP/simulated_metagenome/MG3",
+		extra_threads = 9
+	resources:
+		nodelist = "cmp[240]"
+	benchmark:
+		"{params.dir}/benchmarks/merge.txt"
 	shell:
-		"samtools merge {input} -o {output}"
+		"samtools merge {input} -o {output} --threads {params.extra_threads}"
 
 rule samtools_collate:
 	input:
-		"mapped_reads/all.sam"
+		"{params.dir}/mapped_reads/all.sam"
 	output:
-		"mapped_reads/all_sorted.sam"
+		"{params.dir}/mapped_reads/all_sorted.sam"
 	conda:
 		"../../envs/samtools.yaml"
+        params:
+                t = 10,
+                #m = 500000000,
+                dir = "../../NO_BACKUP/simulated_metagenome/MG3",
+		extra_threads = 9
+	resources:
+		nodelist = "cmp[240]"
+	benchmark:
+		"{params.dir}/benchmarks/collate.txt"
 	shell:
-		"samtools collate {input} -o {output}"
+		"samtools collate {input} -o {output} --threads {params.extra_threads}"
 
