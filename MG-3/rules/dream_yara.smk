@@ -15,16 +15,15 @@ h = config["nr_hashes"]
 # create an IBF from clustered database
 rule dream_IBF:
 	input:
-		expand("{params.dir}/" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
+		expand("../" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
-		"{params.dir}/IBF.filter"
+		"IBF.filter"
 	params:
-		t = 40,
-		dir = "../../NO_BACKUP/simulated_metagenome/MG3"
+		t = 40
 	resources:
 		nodelist = "cmp[249]"
 	benchmark:
-		"{params.dir}/benchmarks/IBF.txt"
+		"benchmarks/IBF.txt"
 	shell:
 		"dream_yara_build_filter --threads {params.t} --kmer-size {k} --filter-type bloom --bloom-size {bf} --num-hash {h} --output-file {output} {input}"
 
@@ -33,15 +32,14 @@ rule dream_IBF:
 # this can be adjusted with command line arguments (see README)
 rule dream_FM_index:
 	input:
-		"{params.dir}/" + str(bin_nr) + "/bins/{bin}.fasta"
+		"../" + str(bin_nr) + "/bins/{bin}.fasta"
 	output:
-		"{params.dir}/fm_indices/{bin}.sa.val"
+		"fm_indices/{bin}.sa.val"
 	params:
-		outdir = "../../NO_BACKUP/simulated_metagenome/MG3/fm_indices/{bin}.",
+		outdir = "fm_indices/{bin}.",
 		t = 4,
-		dir = "../../NO_BACKUP/simulated_metagenome/MG3"
 	benchmark:
-		"{params.dir}/benchmarks/fm_{bin}.txt"
+		"benchmarks/fm_{bin}.txt"
 	resources:
 		nodelist = lambda wildcards : "cmp[216]" if int(wildcards.bin) < 342 else ("cmp[217]" if int(wildcards.bin) < 683 else "cmp[218]")
 	shell:
@@ -57,18 +55,17 @@ rule dream_FM_index:
 # map reads to bins that pass the IBF prefilter
 rule dream_mapper:
 	input:
-		filter = "{params.dir}/IBF.filter",
-		index = expand("{params.dir}/fm_indices/{bin}.sa.val", bin=bin_list),
-		reads = "{params.dir}/" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/{bin}.fastq"
+		filter = "IBF.filter",
+		index = expand("fm_indices/{bin}.sa.val", bin=bin_list),
+		reads = "../" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/{bin}.fastq"
 	output:
-		"{params.dir}/mapped_reads/{bin}.sam"
+		"mapped_reads/{bin}.sam"
 	params:
-		index_dir = "{params.dir}/fm_indices/",
-		t = 4,
-		dir = "../../NO_BACKUP/simulated_metagenome/MG3"
+		index_dir = "fm_indices/",
+		t = 4
 	resources:
 		nodelist = lambda wildcards : "cmp[213]" if int(wildcards.bin) < 342 else ("cmp[214]" if int(wildcards.bin) < 683 else "cmp[215]")
 	benchmark:
-		"{params.dir}/benchmarks/mapped_{bin}.txt"
+		"benchmarks/mapped_{bin}.txt"
 	shell:
 		"dream_yara_mapper -t {params.t} -ft bloom -e {er} -s {sp} -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"

@@ -9,20 +9,19 @@
 
 rule samtools_collate:
 	input:
-		"{params.dir}/mapped_reads/all.sam"
+		"mapped_reads/all.sam"
 	output:
-		"{params.dir}/mapped_reads/all_sorted.sam"
+		"mapped_reads/all_sorted.sam"
 	conda:
-		"../../envs/samtools.yaml"
+		"/home/evelia95/A2-metagenome-snakemake/MG-1/envs/samtools.yaml"
 	params:
 		t = 10,
 		#m = 500000000,
-		dir = "../../NO_BACKUP/simulated_metagenome/MG1",
 		extra_threads = 9
 	resources:
 		nodelist = "cmp[250]"
 	benchmark:
-		"{params.dir}/benchmarks/collate.txt"
+		"benchmarks/collate.txt"
 	shell:
 		"samtools collate {input} -o {output} --threads {params.extra_threads}"
 
