@@ -1,7 +1,7 @@
 # location of raptor binaries
-raptor_bin_dir: "/home/evelia95/raptor_data_simulation/build/bin"
+raptor_bin_dir: "/home/mi/evelia95/raptor_data_simulation/build/bin"
 # location of simulated data
-data_out_dir: "/home/evelia95/NO_BACKUP/simulated_metagenome"
+data_out_dir: "/home/mi/evelia95"
 
 #-----------------------------
 # Parameters of simulated data.
@@ -13,13 +13,24 @@ data_out_dir: "/home/evelia95/NO_BACKUP/simulated_metagenome"
 #
 #-----------------------------
  
-#ref_size: 343597383680    # size of reference in bytes? 320*2^30 = 350GiB
-ref_size: 85899345920    # size of reference in bytes? 80*2^30 = 80GiB
-number_of_bins: 1024
+  # D3: LARGE DATASET
+  #ref_size: 85899345920    # size of reference in bytes? 80*2^30 = 80GiB * 4 haplotypes = 320GB
+  #number_of_bins: 1024
+  #reads_per_genome: 10000      # 10000 * nr_bins * haplotype_count = 40 million reads
+
+  # D2: MID DATASET
+ref_size: 21474836480    # size of reference in bytes? 20*2^30 = 20GiB * 4 haplotypes = 80GB
+number_of_bins: 256
+reads_per_genome: 2000      # 2000 * nr_bins * haplotype_count = 2 million reads
+
+  # D1: SMALL DATASET
+  #ref_size: 262144000    # size of reference in bytes? 250*2^20 = 250MiB * 4 haplotypes = 1GB
+  #number_of_bins: 64
+  #reads_per_genome: 500      # 10000 * nr_bins * haplotype_count = 100k reads
+
+
 errors_per_read: 3     # number of errors; this is the basis for error rate in an approximate match
 read_length: 150
-# create a total of 4 million reads
-reads_per_genome: 10000      # 10000 * nr_bins * haplotype_count = query_size
 
 #-----------------------------
 # Mason variator parameters.

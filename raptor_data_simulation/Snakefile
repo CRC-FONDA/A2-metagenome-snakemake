@@ -20,46 +20,40 @@ rc = rpg * ht * bin_nr
 # Helper variables
 bins = [*range(0, bin_nr, 1)]
 
+#workdir: "/home/evelia95/A2-metagenome-snakemake/raptor-data-simulation"
+
 rule make_all:
 	input:
-		reads = expand("../../NO_BACKUP/simulated_metagenome/reads/{bin}.fastq", bin=bins)
+		reads = expand("../../../../../group/ag_abi/eaasna/reads/{bin}.fastq", bin=bins)
 	params:
 		t = 1
-	resources:
-		nodelist = "cmp[241]"
 	shell:
 		"echo 'Done'"
 
 rule create_ref:		
 	output:
-		"../../NO_BACKUP/simulated_metagenome/bins/ref.fasta"
+		"../../../../../group/ag_abi/eaasna/bins/ref.fasta"
 	params:
 		t = 1
-	resources:
-		nodelist = "cmp[241]"
 	shell:
 		"./scripts/create_ref.sh {length}"
 
 rule divide_into_bins:		
 	input:
-		"../../NO_BACKUP/simulated_metagenome/bins/ref.fasta"
+		"../../../../../group/ag_abi/eaasna/bins/ref.fasta"
 	output:
-		expand("../../NO_BACKUP/simulated_metagenome/bins/{bin}.fasta", bin=bins)
+		expand("../../../../../group/ag_abi/eaasna/bins/{bin}.fasta", bin=bins)
 	params:
 		t = 1
-	resources:
-		nodelist = "cmp[241]"
 	shell:
 		"./scripts/divide_into_bins.sh {length} {bin_nr} {ht}"
 
 rule sample_reads:
 	input:
-		"../../NO_BACKUP/simulated_metagenome/bins/{bin}.fasta"
+		"../../../../../group/ag_abi/eaasna/bins/{bin}.fasta"
 	output:
-		"../../NO_BACKUP/simulated_metagenome/reads/{bin}.fastq"
+		"../../../../../group/ag_abi/eaasna/reads/{bin}.fastq"
 	params:
 		t = 2
-	resources:
-		nodelist = "cmp[241]"
 	shell:
 		"./scripts/sample_reads.sh {bin_nr} {epr} {rl} {rc} {ht}"
