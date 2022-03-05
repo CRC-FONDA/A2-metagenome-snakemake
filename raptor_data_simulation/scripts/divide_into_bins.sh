@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
-BINARY_DIR=/home/evelia95/raptor_data_simulation/build/bin
-OUT_DIR=/home/evelia95/NO_BACKUP/simulated_metagenome
-LENGTH=${1} 	# 4*2^20 =  64MiB
+BINARY_DIR=${1}
+OUT_DIR=${2}
+LENGTH=${3} 	# 4*2^20 =  64MiB
 SEED=42 # was 20181406 before, but was hardcoded to 42 in seqan
-BIN_NUMBER=${2}
-HAPLOTYPE_COUNT=${3}
+BIN_NUMBER=${4}
+HAPLOTYPE_COUNT=${5}
 
 output_dir=$OUT_DIR
 bin_dir=$output_dir/bins
@@ -18,7 +18,7 @@ bin_length=$((LENGTH / BIN_NUMBER))
 echo "Splitting genome into $BIN_NUMBER bins with bin_length of $bin_length"
 $BINARY_DIR/split_sequence --input $bin_dir/ref.fasta --length $bin_length --parts $BIN_NUMBER
 # We do not need the reference anymore
-# rm $bin_dir/ref.fasta
+rm $bin_dir/ref.fasta
 # Rename the bins to .fa
 for i in $bin_dir/*.fasta; do mv $i $bin_dir/$(basename $i .fasta).fa; done
 # Simulate haplotypes for each bin
@@ -44,9 +44,9 @@ done;
 #for file in 0000[0-9]*.fasta; do
 #	mv "$file" "${file#0}";
 #done;
-for file in 000[0-9]*.fasta; do
-	mv "$file" "${file#0}";
-done;
+#for file in 000[0-9]*.fasta; do
+#	mv "$file" "${file#0}";
+#done;
 for file in 00[0-9]*.fasta; do
 	mv "$file" "${file#0}";
 done;

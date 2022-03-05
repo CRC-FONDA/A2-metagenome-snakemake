@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -e
 
-BINARY_DIR=/home/evelia95/raptor_data_simulation/build/bin
-OUT_DIR=/home/evelia95/NO_BACKUP/simulated_metagenome
-BIN_NUMBER=${1}
-ERRORS=${2}
-READ_LENGTHS=${3}
-READ_COUNT=${4}
-HAPLOTYPE_COUNT=${5}
+BINARY_DIR=${1}
+OUT_DIR=${2}
+BIN_NUMBER=${3}
+ERRORS=${4}
+READ_LENGTHS=${5}
+READ_COUNT=${6}
+HAPLOTYPE_COUNT=${7}
 
 output_dir=$OUT_DIR
 bin_dir=$output_dir/bins

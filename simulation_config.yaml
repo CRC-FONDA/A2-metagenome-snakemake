@@ -1,7 +1,6 @@
 # location of raptor binaries
-raptor_bin_dir: "/home/mi/evelia95/raptor_data_simulation/build/bin"
-# location of simulated data
-data_out_dir: "/home/mi/evelia95"
+raptor_bin_dir: "../../raptor_data_simulation/build/bin"
+data_out_dir: "../.."
 
 #-----------------------------
 # Parameters of simulated data.

@@ -4,6 +4,9 @@ import os.path
 # All parameters are set in config.yaml
 configfile: "../simulation_config.yaml"
 
+bin_dir = config["raptor_bin_dir"]
+out_dir = config["data_out_dir"]
+
 # Simulating reference
 length = config["ref_size"]
 bin_nr = config["number_of_bins"]
@@ -24,7 +27,7 @@ bins = [*range(0, bin_nr, 1)]
 
 rule make_all:
 	input:
-		reads = expand("../../../../../group/ag_abi/eaasna/reads/{bin}.fastq", bin=bins)
+		reads = expand("../../reads/{bin}.fastq", bin=bins)
 	params:
 		t = 1
 	shell:
@@ -32,28 +35,28 @@ rule make_all:
 
 rule create_ref:		
 	output:
-		"../../../../../group/ag_abi/eaasna/bins/ref.fasta"
+		"../../bins/ref.fasta"
 	params:
 		t = 1
 	shell:
-		"./scripts/create_ref.sh {length}"
+		"./scripts/create_ref.sh {bin_dir} {out_dir} {length}"
 
 rule divide_into_bins:		
 	input:
-		"../../../../../group/ag_abi/eaasna/bins/ref.fasta"
+		"../../bins/ref.fasta"
 	output:
-		expand("../../../../../group/ag_abi/eaasna/bins/{bin}.fasta", bin=bins)
+		expand("../../bins/{bin}.fasta", bin=bins)
 	params:
 		t = 1
 	shell:
-		"./scripts/divide_into_bins.sh {length} {bin_nr} {ht}"
+		"./scripts/divide_into_bins.sh {bin_dir} {out_dir} {length} {bin_nr} {ht}"
 
 rule sample_reads:
 	input:
-		"../../../../../group/ag_abi/eaasna/bins/{bin}.fasta"
+		"../../bins/{bin}.fasta"
 	output:
-		"../../../../../group/ag_abi/eaasna/reads/{bin}.fastq"
+		"../../reads/{bin}.fastq"
 	params:
 		t = 2
 	shell:
-		"./scripts/sample_reads.sh {bin_nr} {epr} {rl} {rc} {ht}"
+		"./scripts/sample_reads.sh {bin_dir} {out_dir} {bin_nr} {epr} {rl} {rc} {ht}"
