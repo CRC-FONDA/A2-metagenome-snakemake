@@ -26,8 +26,8 @@ do
         --number_of_haplotypes $HAPLOTYPE_COUNT \
         $(seq -f "$output_dir/bins/%0g.fasta" 0 1 $((BIN_NUMBER-1))) > /dev/null
     echo "Finished read sampling"
-#    cat $read_dir/*.fastq > $read_dir/all
-#    mv $read_dir/all $read_dir/all.fastq
+    cat $read_dir/*.fastq > $read_dir/all
+    mv $read_dir/all $read_dir/all.fastq
 #    for i in $(seq 0 9); do cat $read_dir/all.fastq >> $read_dir/all_10.fastq; done
 done
 
