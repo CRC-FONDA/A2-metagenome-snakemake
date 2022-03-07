@@ -21,7 +21,7 @@ rule samtools_merge:
 	resources:
 		nodelist = "cmp[240]"
 	benchmark:
-		"benchmarks/merge.txt"
+		repeat("benchmarks/merge.txt", 2)
 	shell:
 		"samtools merge {input} -o {output} --threads {params.extra_threads}"
 
@@ -39,7 +39,7 @@ rule samtools_collate:
 	resources:
 		nodelist = "cmp[240]"
 	benchmark:
-		"benchmarks/collate.txt"
+		repeat("benchmarks/collate.txt", 2)
 	shell:
 		"samtools collate {input} -o {output} --threads {params.extra_threads}"
 

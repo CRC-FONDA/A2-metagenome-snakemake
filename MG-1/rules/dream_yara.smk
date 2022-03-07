@@ -23,7 +23,7 @@ rule dream_IBF:
 	resources:
 		nodelist = "cmp[249]"
 	benchmark:
-		"benchmarks/IBF.txt"
+		repeat("benchmarks/IBF.txt", 2)
 	shell:
 		"dream_yara_build_filter --threads {params.t} --kmer-size {k} --filter-type bloom --bloom-size {bf} --num-hash {h} --output-file {output} {input}"
 
@@ -39,7 +39,7 @@ rule dream_FM_index:
 	resources:
 		nodelist = "cmp[249]"
 	benchmark:
-		"benchmarks/fm_indices.txt"
+		repeat("benchmarks/fm_indices.txt", 2)
 	shell:
 		"dream_yara_indexer --threads {params.t} --output-prefix {params.outdir} {input.bins}"
 	
@@ -57,6 +57,6 @@ rule dream_mapper:
 	resources:
 		nodelist = "cmp[249]"
 	benchmark:
-		"benchmarks/mapping.txt"
+		repeat("benchmarks/mapping.txt", 2)
 	shell:
 		"dream_yara_mapper -t {params.t} -ft bloom -e {er} -s {sp} -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"

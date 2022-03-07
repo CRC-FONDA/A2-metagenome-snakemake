@@ -21,7 +21,7 @@ rule samtools_collate:
 	resources:
 		nodelist = "cmp[250]"
 	benchmark:
-		"benchmarks/collate.txt"
+		repeat("benchmarks/collate.txt", 2)
 	shell:
 		"samtools collate {input} -o {output} --threads {params.extra_threads}"
 

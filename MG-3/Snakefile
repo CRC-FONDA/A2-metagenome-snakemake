@@ -9,7 +9,7 @@ rl = config["read_length"]
 # Creating list of wildcards
 bin_list = [str(i) for i in list(range(0,bin_nr))]
 
-workdir: "/home/evelia95/NO_BACKUP/simulated_metagenome/MG3"
+workdir: "../../NO_BACKUP/simulated_metagenome/MG3"
 
 rule make_all:
 	input:
@@ -19,7 +19,7 @@ rule make_all:
 	resources:
 		nodelist = "cmp[227]"
 	benchmark:
-		"benchmarks/all.txt"
+		repeat("benchmarks/all.txt", 2)
 	shell:
 		"echo 'Done'"
 
