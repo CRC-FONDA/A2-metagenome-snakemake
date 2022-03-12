@@ -13,11 +13,10 @@ rule samtools_collate:
 	output:
 		"mapped_reads/all_sorted.sam"
 	conda:
-		"/home/evelia95/A2-metagenome-snakemake/MG-1/envs/samtools.yaml"
+		"../../envs/samtools.yaml"
 	params:
-		t = 10,
-		#m = 500000000,
 		extra_threads = 9
+	threads: 10
 	resources:
 		nodelist = "cmp[250]"
 	benchmark:
