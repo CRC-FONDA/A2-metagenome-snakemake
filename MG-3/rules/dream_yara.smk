@@ -1,5 +1,5 @@
 # Search parameters (besides error rate)  are set in config.yaml
-configfile: "search_config.yaml"
+configfile: "../A2-metagenome-snakemake/search_config.yaml"
 
 # Parameters for the search
 k = config["kmer_length"]
@@ -18,12 +18,13 @@ rule dream_IBF:
 		expand("../" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
 		"IBF.filter"
-	params:
-		t = 40
+	threads: 40
+	resources:
+		mem_mb = 40000
 	benchmark:
 		repeat("benchmarks/IBF.txt", 2)
 	shell:
-		"dream_yara_build_filter --threads {params.t} --kmer-size {k} --filter-type bloom --bloom-size {bf} --num-hash {h} --output-file {output} {input}"
+		"dream_yara_build_filter --threads {threads} --kmer-size {k} --filter-type bloom --bloom-size {bf} --num-hash {h} --output-file {output} {input}"
 
 # create FM-indices for each bin
 # by default: number of jobs == number of bins
@@ -34,13 +35,13 @@ rule dream_FM_index:
 	output:
 		"fm_indices/{bin}.sa.val"
 	params:
-		outdir = "fm_indices/{bin}.",
-		t = 4
+		outdir = "fm_indices/{bin}."
+	threads: 4
 	benchmark:
 		repeat("benchmarks/fm_{bin}.txt", 2)
 	shell:
 		"""
-		dream_yara_indexer --threads {params.t} --output-prefix {params.outdir} {input}
+		dream_yara_indexer --threads {threads} --output-prefix {params.outdir} {input}
 		
 		for file in fm_indices/{wildcards.bin}.0.*
 		do
@@ -57,9 +58,9 @@ rule dream_mapper:
 	output:
 		"mapped_reads/{bin}.sam"
 	params:
-		index_dir = "fm_indices/",
-		t = 4
+		index_dir = "fm_indices/"
+	threads: 4
 	benchmark:
 		repeat("benchmarks/mapped_{bin}.txt", 2)
 	shell:
-		"dream_yara_mapper -t {params.t} -ft bloom -e {er} -s {sp} -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"
+		"dream_yara_mapper -t {threads} -ft bloom -e {er} -s {sp} -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"

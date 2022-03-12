@@ -14,10 +14,9 @@ rule samtools_merge:
 		"mapped_reads/all.sam"
 	conda:
 		"../../envs/samtools.yaml"
-        params:
-                t = 10,
-                #m = 500000000,
+	params:
 		extra_threads = 9
+	threads: 10
 	benchmark:
 		repeat("benchmarks/merge.txt", 2)
 	shell:
@@ -30,10 +29,9 @@ rule samtools_collate:
 		"mapped_reads/all_sorted.sam"
 	conda:
 		"../../envs/samtools.yaml"
-        params:
-                t = 10,
-                #m = 500000000,
+	params:
 		extra_threads = 9
+	threads: 10
 	benchmark:
 		repeat("benchmarks/collate.txt", 2)
 	shell:

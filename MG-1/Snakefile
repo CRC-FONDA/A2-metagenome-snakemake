@@ -14,8 +14,6 @@ workdir: "../../MG1"
 rule make_all:
 	input:
 		"mapped_reads/all_sorted.sam"
-	params:
-		t = 1
 	benchmark:
 		repeat("benchmarks/all.txt", 2)
 	shell:
