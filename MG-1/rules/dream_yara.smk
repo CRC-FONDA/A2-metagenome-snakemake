@@ -37,7 +37,7 @@ rule dream_FM_index:
 		outdir = "fm_indices/"
 	threads: 40
 	resources:
-		nodelist = "cmp[242]"
+		nodelist = "cmp[248]"
 	benchmark:
 		repeat("benchmarks/fm_indices.txt", 2)
 	shell:
