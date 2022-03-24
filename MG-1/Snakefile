@@ -14,8 +14,6 @@ workdir: "/nfs/buffer/ag_abi/eaasna/allegro/MG1"
 rule make_all:
 	input:
 		"mapped_reads/all_sorted.sam"
-	params:
-		t = 1
 	resources:
 		nodelist = "cmp[227]"
 	benchmark:

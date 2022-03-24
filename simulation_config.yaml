@@ -28,7 +28,7 @@ data_out_dir: "../../NO_BACKUP/simulated_metagenome"
   #number_of_bins: 64
   #reads_per_genome: 500      # 10000 * nr_bins * haplotype_count = 100k reads
 
-errors_per_read: 5     # number of errors; this is the basis for error rate in an approximate match
+errors_per_read: 3     # number of errors; this is the basis for error rate in an approximate match
 read_length: 150
 
 #-----------------------------
