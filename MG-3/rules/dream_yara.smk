@@ -1,5 +1,5 @@
 # Search parameters (besides error rate)  are set in config.yaml
-configfile: "../A2-metagenome-snakemake/search_config.yaml"
+configfile: "../../A2-metagenome-snakemake/search_config.yaml"
 
 # Parameters for the search
 k = config["kmer_length"]
@@ -15,7 +15,7 @@ h = config["nr_hashes"]
 # create an IBF from clustered database
 rule dream_IBF:
 	input:
-		expand("../" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
+		expand("../../" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
 		"IBF.filter"
 	threads: 40
@@ -32,7 +32,7 @@ rule dream_IBF:
 # this can be adjusted with command line arguments (see README)
 rule dream_FM_index:
 	input:
-		"../" + str(bin_nr) + "/bins/{bin}.fasta"
+		"../../" + str(bin_nr) + "/bins/{bin}.fasta"
 	output:
 		"fm_indices/{bin}.sa.val"
 	params:
@@ -57,7 +57,7 @@ rule dream_mapper:
 	input:
 		filter = "IBF.filter",
 		index = expand("fm_indices/{bin}.sa.val", bin=bin_list),
-		reads = "../" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/{bin}.fastq"
+		reads = "../../" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/{bin}.fastq"
 	output:
 		"mapped_reads/{bin}.sam"
 	params:
