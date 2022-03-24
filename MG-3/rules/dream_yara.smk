@@ -41,10 +41,10 @@ rule dream_FM_index:
 	benchmark:
 		repeat("benchmarks/fm_{bin}.txt", 2)
 	resources:
-		nodelist = lambda wildcards : "cmp[216]" if int(wildcards.bin) < 342 else ("cmp[217]" if int(wildcards.bin) < 683 else "cmp[218]")
+		nodelist = lambda wildcards : "cmp[206]" if int(wildcards.bin) < 85 else ("cmp[207]" if int(wildcards.bin) < 170 else "cmp[208]")
 	shell:
 		"""
-		dream_yara_indexer --threads {params.t} --output-prefix {params.outdir} {input}
+		dream_yara_indexer --threads {threads} --output-prefix {params.outdir} {input}
 		
 		for file in fm_indices/{wildcards.bin}.0.*
 		do
@@ -64,8 +64,8 @@ rule dream_mapper:
 		index_dir = "fm_indices/"
 	threads: 4
 	resources:
-		nodelist = lambda wildcards : "cmp[213]" if int(wildcards.bin) < 342 else ("cmp[214]" if int(wildcards.bin) < 683 else "cmp[215]")
+		nodelist = lambda wildcards : "cmp[206]" if int(wildcards.bin) < 85 else ("cmp[207]" if int(wildcards.bin) < 170 else "cmp[208]")
 	benchmark:
 		repeat("benchmarks/mapped_{bin}.txt", 2)
 	shell:
-		"dream_yara_mapper -t {params.t} -ft bloom -e {er} -s {sp} -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"
+		"dream_yara_mapper -t {threads} -ft bloom -e {er} -s {sp} -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"

@@ -15,13 +15,13 @@ h = config["nr_hashes"]
 # create an IBF from clustered database
 rule dream_IBF:
 	input:
-		expand("../" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
+		expand("../../" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
 		"IBF.filter"
 	threads: 40
 	resources:
-		nodelist = "cmp[249]",
-		mem_mb = 40000
+		nodelist = "cmp[241]",
+		mem_mb = 1000
 	benchmark:
 		repeat("benchmarks/IBF.txt", 2)
 	shell:
@@ -30,14 +30,14 @@ rule dream_IBF:
 # create FM-indices for each bin
 rule dream_FM_index:
 	input:
-		bins = expand("../" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
+		bins = expand("../../" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
 		expand("fm_indices/{bin}.sa.val", bin = bin_list)
 	params:
 		outdir = "fm_indices/"
 	threads: 40
 	resources:
-		nodelist = "cmp[249]"
+		nodelist = "cmp[241]"
 	benchmark:
 		repeat("benchmarks/fm_indices.txt", 2)
 	shell:
@@ -48,14 +48,14 @@ rule dream_mapper:
 	input:
 		filter = "IBF.filter",
 		index = expand("fm_indices/{bin}.sa.val", bin = bin_list),
-		reads = "../" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/all.fastq"
+		reads = "../../" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/all.fastq"
 	output:
 		"mapped_reads/all.sam"
 	params:
 		index_dir = "fm_indices/"
 	threads: 40
 	resources:
-		nodelist = "cmp[249]"
+		nodelist = "cmp[241]"
 	benchmark:
 		repeat("benchmarks/mapping.txt", 2)
 	shell:
