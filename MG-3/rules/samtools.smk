@@ -1,10 +1,6 @@
 # -----------------------------
-# 
-# Rule resources for sorting:
-# m: max memory per thread in bytes (default is 500000000)
-# t: threads (default single threaded)
-#
-# thread and memory parameters could also be added to the index and stats commands
+# Samtools collate groups reads together by name.
+# Faster alternative to sorting.
 # -----------------------------
 
 rule samtools_merge:
@@ -16,7 +12,7 @@ rule samtools_merge:
 		extra_threads = 9
 	threads: 10
 	resources:
-		nodelist = "cmp[206]",
+		nodelist = "cmp[241]",
 		mem_mb = 10000
 	benchmark:
 		repeat("benchmarks/merge.txt", 2)
@@ -32,7 +28,7 @@ rule samtools_collate:
 		extra_threads = 9
 	threads: 10
 	resources:
-		nodelist = "cmp[206]",
+		nodelist = "cmp[241]",
 		mem_mb = 10000
 	benchmark:
 		repeat("benchmarks/collate.txt", 2)
