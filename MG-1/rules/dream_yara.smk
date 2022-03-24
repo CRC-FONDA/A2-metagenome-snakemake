@@ -20,7 +20,7 @@ rule dream_IBF:
 		"IBF.filter"
 	threads: 40
 	resources:
-		mem_mb = 40000
+		mem_mb = 1000
 	benchmark:
 		repeat("benchmarks/IBF.txt", 2)
 	shell:
