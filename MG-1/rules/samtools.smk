@@ -1,10 +1,6 @@
 # -----------------------------
-# 
-# Rule resources for sorting:
-# m: max memory per thread in bytes (default is 500000000)
-# t: threads (default single threaded)
-#
-# thread and memory parameters could also be added to the index and stats commands
+# Samtools collate groups reads together by name.
+# Faster alternative to sorting.
 # -----------------------------
 
 rule samtools_collate:
