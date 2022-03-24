@@ -1,5 +1,5 @@
 # Search parameters (besides error rate)  are set in config.yaml
-configfile: "../A2-metagenome-snakemake/search_config.yaml"
+configfile: "../../A2-metagenome-snakemake/search_config.yaml"
 
 # Parameters for the search
 k = config["kmer_length"]
