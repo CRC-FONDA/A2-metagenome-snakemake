@@ -17,12 +17,12 @@ rule dream_IBF:
 	input:
 		expand("../" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
-		"IBF.filter"
+		"dream.filter"
 	threads: 40
 	resources:
 		mem_mb = 1000
 	benchmark:
-		repeat("benchmarks/IBF.txt", 2)
+		"benchmarks/IBF.txt"
 	shell:
 		"dream_yara_build_filter --threads {threads} --kmer-size {k} --filter-type bloom --bloom-size {bf} --num-hash {h} --output-file {output} {input}"
 
@@ -43,7 +43,7 @@ rule dream_FM_index:
 # map reads to bins that pass the IBF prefilter
 rule dream_mapper:
 	input:
-		filter = "IBF.filter",
+		filter = "dream.filter",
 		index = expand("fm_indices/{bin}.sa.val", bin = bin_list),
 		reads = "../" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/all.fastq"
 	output:
