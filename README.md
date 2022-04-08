@@ -28,7 +28,7 @@ cd raptor_data_simulation
 snakemake --cores 1
 ```
 
-Then set the search parameters in `search_config.yaml`. To run one of the MG-* snakemake workflows :
+Then set the search parameters in `search_config.yaml`. To run one of the MG-* snakemake workflows:
 ```
 cd MG-1
 snakemake --use-conda --cores {e.g 8}
