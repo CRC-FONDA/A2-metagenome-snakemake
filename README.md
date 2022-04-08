@@ -47,11 +47,6 @@ Other useful flags:
 Simulating DNA sequences with https://github.com/eseiler/raptor_data_simulation.
 Run this workflow before running any of the MG-* workflows. The data simulation parameters are set in `simulation_config.yaml`. All MG-x workflows have a separate configuration file called `search_config.yaml` where prefiltering and search parameters should be set. 
 
-**NOTE:** Raptor data simulation has to be built from source. 
-
-Data simulation source code:
-https://github.com/eseiler/raptor_data_simulation
-
 
 ### MG-R 
 This is a state of the art representative workflow for mapping metagenomic reads. The prefiltering and read mapping steps of MG-R are identical to MG-1. MG-R additionally contains a species abundance estimation step.
@@ -74,11 +69,6 @@ Steps of workflow:
 
 ![job counts for MG-1](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-1/job_counts.png)
 
-**NOTE:** DREAM-Yara is not available through conda and has to be built from source. Also add location of DREAM-Yara binaries to $PATH.
-
-DREAM-Yara source code:
-https://github.com/temehi/dream_yara
-
 ### MG-2
 ![directed acyclic graph for MG-2](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-2/dag.png)
 
@@ -94,14 +84,6 @@ Steps of workflow:
 
 ![job counts for MG-2](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-2/job_counts.png)
 
-**NOTE:** The hashmap and match-consolidator have to be built from source and the location of the binaries should be added to $PATH.
-
-Hashmap source code: 
-https://github.com/eaasna/low-memory-prefilter
-
-Match consolidator source code:
-https://github.com/eaasna/match-consolidator
-
 ### MG-3
 ![directed acyclic graph for MG-3](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-3/dag.png)
 
@@ -113,11 +95,6 @@ Steps of workflow:
 3. Map each read to the FM-index determined by IBF pre-filtering (one job per bin)
 
 ![job counts for MG-3](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-3/job_counts.png)
-
-**NOTE:** DREAM-Yara is not available through conda and has to be built from source. Also add location of DREAM-Yara binaries to $PATH.
-
-DREAM-Yara source code:
-https://github.com/temehi/dream_yara
 
 ---
 
