@@ -1,0 +1,5 @@
+NB: these were created before the "threads" directive was added
+
+s	h:m:s	max_rss	max_vms	max_uss	max_pss	io_in	io_out	mean_load	cpu_time
+78842.5225	21:54:02	55460.43	70746.64	55456.78	55457.41	744786.72	8572803.97	100.63	79335.66
+81002.9920	22:30:02	55056.28	70389.39	55053.30	55053.71	818142.19	8572803.98	97.06	78619.28
