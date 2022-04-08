@@ -1,10 +1,6 @@
 # -----------------------------
-# 
-# Rule resources for sorting:
-# m: max memory per thread in bytes (default is 500000000)
-# t: threads (default single threaded)
-#
-# thread and memory parameters could also be added to the index and stats commands
+# Samtools collate groups reads together by name.
+# Faster alternative to sorting.
 # -----------------------------
 
 rule samtools_merge:
@@ -12,13 +8,12 @@ rule samtools_merge:
 		expand("mapped_reads/{bin}.sam", bin=bin_list)
 	output:
 		"mapped_reads/all.sam"
-	conda:
-		"../../envs/samtools.yaml"
-        params:
+	params:
 		extra_threads = 9
 	threads: 10
 	resources:
-		nodelist = "cmp[240]"
+		nodelist = "cmp[241]",
+		mem_mb = 10000
 	benchmark:
 		repeat("benchmarks/merge.txt", 2)
 	shell:
@@ -29,13 +24,12 @@ rule samtools_collate:
 		"mapped_reads/all.sam"
 	output:
 		"mapped_reads/all_sorted.sam"
-	conda:
-		"../../envs/samtools.yaml"
-        params:
+	params:
 		extra_threads = 9
 	threads: 10
 	resources:
-		nodelist = "cmp[240]"
+		nodelist = "cmp[241]",
+		mem_mb = 10000
 	benchmark:
 		repeat("benchmarks/collate.txt", 2)
 	shell:

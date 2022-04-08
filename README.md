@@ -1,12 +1,37 @@
 # Metagenome read mapping approaches
 
-This repository contains multiple examples of scientific workflows. The goal of this repository is to write workflow components for mapping metagenomics reads that can be used on different architectures. 
+This repository contains examples of scientific workflows. The goal of this repository is to write workflow components for mapping metagenomics reads that can be used on different architectures. 
 
-The repository is divided into subprojects, details of each below.
+The repository is divided into subprojects, details of each below. Each MG-* project directory contains a Snakemake workflow. There are git branches `allegro` for the allegro cluster and `redwood` for the redwood server (MG-1 and MG-3). https://stackoverflow.com/questions/1783405/how-do-i-check-out-a-remote-git-branch
+
+## Benchmarking
+
+Prerequisites: 
+- conda installation https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html
+- active conda environment with snakemake installation https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
+- built from source:
+  * https://github.com/eseiler/raptor_data_simulation
+  * https://github.com/seqan/dream_yara (MG-1 and MG-3)
+  * https://github.com/eaasna/low-memory-prefilter (MG-2)
+  * https://github.com/eaasna/match-consolidator (MG-2)
+
+Start by running the raptor_data_simulation workflow. Set input parameters in `simulation_config.yaml`. 
+
+### Allegro 
+
+MG-1:
+`snakemake --use-conda -s Snakefile --cluster 'sbatch -t 100 --nodelist={resources.nodelist}  --mem=40g --cpus-per-task={threads} -p big' -j 5 --latency-wait 80`
+
+MG-3: 
+`snakemake --use-conda -s Snakefile --cluster 'sbatch -t 1440 --nodelist={resources.nodelist}  --mem=40g --cpus-per-task={threads} -p big' -j 20 --latency-wait 80`
+
+### Redwood 
+
+`snakemake --use-conda --cores { }`
 
 ---
 
-## Running snakemake
+### Running snakemake locally
 
 To run the snakemake workflow in one of the subfolders:
 `snakemake --use-conda --cores {e.g 8}`
@@ -40,6 +65,8 @@ Steps of workflow:
 4. Sort and index the resulting .bam file and find the number of reads that mapped to each bin.
 
 ### MG-1
+Set IBF size in `search_config.yaml` based on the size of the input data https://hur.st/bloomfilter/ to retain a low false positive rate. 
+
 ![directed acyclic graph for MG-1](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-1/dag.png)
 
 This workflow is optimized to be run on a local system with large main memory and multiple threads. The large main memory is used when working with the IBF (at least 1GB) which has to be read completely into memory. The FM-indices, IBF creation and read mapping are done using 8 threads. 
@@ -54,7 +81,7 @@ Steps of workflow:
 **NOTE:** DREAM-Yara is not available through conda and has to be built from source. Also add location of DREAM-Yara binaries to $PATH.
 
 DREAM-Yara source code:
-https://github.com/temehi/dream_yara
+https://github.com/seqan/dream_yara
 
 ### MG-2
 ![directed acyclic graph for MG-2](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-2/dag.png)
@@ -94,7 +121,7 @@ Steps of workflow:
 **NOTE:** DREAM-Yara is not available through conda and has to be built from source. Also add location of DREAM-Yara binaries to $PATH.
 
 DREAM-Yara source code:
-https://github.com/temehi/dream_yara
+https://github.com/seqan/dream_yara
 
 ---
 

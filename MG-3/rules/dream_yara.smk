@@ -1,5 +1,5 @@
 # Search parameters (besides error rate)  are set in config.yaml
-configfile: "../A2-metagenome-snakemake/search_config.yaml"
+configfile: "../../A2-metagenome-snakemake/search_config.yaml"
 
 # Parameters for the search
 k = config["kmer_length"]
@@ -15,13 +15,13 @@ h = config["nr_hashes"]
 # create an IBF from clustered database
 rule dream_IBF:
 	input:
-		expand("../" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
+		expand("../../" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
 		"IBF.filter"
 	threads: 40
 	resources:
-		nodelist = "cmp[249]",
-		mem_mb = 40000
+		nodelist = "cmp[241]",
+		mem_mb = 1000
 	benchmark:
 		repeat("benchmarks/IBF.txt", 2)
 	shell:
@@ -32,7 +32,7 @@ rule dream_IBF:
 # this can be adjusted with command line arguments (see README)
 rule dream_FM_index:
 	input:
-		"../" + str(bin_nr) + "/bins/{bin}.fasta"
+		"../../" + str(bin_nr) + "/bins/{bin}.fasta"
 	output:
 		"fm_indices/{bin}.sa.val"
 	params:
@@ -41,10 +41,10 @@ rule dream_FM_index:
 	benchmark:
 		repeat("benchmarks/fm_{bin}.txt", 2)
 	resources:
-		nodelist = lambda wildcards : "cmp[216]" if int(wildcards.bin) < 342 else ("cmp[217]" if int(wildcards.bin) < 683 else "cmp[218]")
+		nodelist = lambda wildcards : "cmp[206]" if int(wildcards.bin) < 85 else ("cmp[207]" if int(wildcards.bin) < 170 else "cmp[208]")
 	shell:
 		"""
-		dream_yara_indexer --threads {params.t} --output-prefix {params.outdir} {input}
+		dream_yara_indexer --threads {threads} --output-prefix {params.outdir} {input}
 		
 		for file in fm_indices/{wildcards.bin}.0.*
 		do
@@ -57,15 +57,15 @@ rule dream_mapper:
 	input:
 		filter = "IBF.filter",
 		index = expand("fm_indices/{bin}.sa.val", bin=bin_list),
-		reads = "../" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/{bin}.fastq"
+		reads = "../../" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/{bin}.fastq"
 	output:
 		"mapped_reads/{bin}.sam"
 	params:
 		index_dir = "fm_indices/"
 	threads: 4
 	resources:
-		nodelist = lambda wildcards : "cmp[213]" if int(wildcards.bin) < 342 else ("cmp[214]" if int(wildcards.bin) < 683 else "cmp[215]")
+		nodelist = lambda wildcards : "cmp[206]" if int(wildcards.bin) < 85 else ("cmp[207]" if int(wildcards.bin) < 170 else "cmp[208]")
 	benchmark:
 		repeat("benchmarks/mapped_{bin}.txt", 2)
 	shell:
-		"dream_yara_mapper -t {params.t} -ft bloom -e {er} -s {sp} -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"
+		"dream_yara_mapper -t {threads} -ft bloom -e {er} -s {sp} -y full -fi {input.filter} -o {output} {params.index_dir} {input.reads}"
