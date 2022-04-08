@@ -9,9 +9,15 @@ rl = config["read_length"]
 # Creating list of wildcards
 bin_list = [str(i) for i in list(range(0,bin_nr))]
 
+workdir: "../../NO_BACKUP/simulated_metagenome/MG3"
+
 rule make_all:
 	input:
 		"mapped_reads/all_sorted.sam"
+	resources:
+		nodelist = "cmp[227]"
+	benchmark:
+		repeat("benchmarks/all.txt", 2)
 	shell:
 		"echo 'Done'"
 

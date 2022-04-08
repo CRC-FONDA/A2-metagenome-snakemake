@@ -15,8 +15,12 @@ rule samtools_collate:
 	conda:
 		"../../envs/samtools.yaml"
 	params:
-		t = 1,
-		m = 500000000
+		extra_threads = 9
+	threads: 10
+	resources:
+		nodelist = "cmp[250]"
+	benchmark:
+		repeat("benchmarks/collate.txt", 2)
 	shell:
-		"samtools collate {input} -o {output}"
+		"samtools collate {input} -o {output} --threads {params.extra_threads}"
 

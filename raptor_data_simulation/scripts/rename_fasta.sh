@@ -1,6 +1,6 @@
 #!/bin/bash
 
-p="../data/${1}/${2}/bins"
+p="${1}/${2}/bins"
 echo "${p}"
 cd $p
 
