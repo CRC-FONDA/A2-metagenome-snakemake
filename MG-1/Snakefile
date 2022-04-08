@@ -6,10 +6,10 @@ bin_nr = config["number_of_bins"]
 epr = config["errors_per_read"]
 rl = config["read_length"]
 
+workdir: "../../allegro/MG1"
+
 # Creating list of wildcards
 bin_list = [str(i) for i in list(range(0,bin_nr))]
-
-workdir: "../../NO_BACKUP/simulated_metagenome/MG1"
 
 rule make_all:
 	input:
