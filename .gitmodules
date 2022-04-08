@@ -1,0 +1,12 @@
+[submodule "lib/raptor_data_simulation"]
+	path = lib/raptor_data_simulation
+	url = git@github.com:eseiler/raptor_data_simulation.git
+[submodule "lib/dream_yara"]
+	path = lib/dream_yara
+	url = git@github.com:seqan/dream_yara.git
+[submodule "lib/low-memory-prefilter"]
+	path = lib/low-memory-prefilter
+	url = git@github.com:eaasna/low-memory-prefilter.git
+[submodule "lib/match-consolidator"]
+	path = lib/match-consolidator
+	url = git@github.com:eaasna/match-consolidator.git
