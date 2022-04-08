@@ -2,7 +2,7 @@
 
 This repository contains examples of scientific workflows. The goal of this repository is to write workflow components for mapping metagenomics reads that can be used on different architectures. 
 
-The repository is divided into subprojects, details of each below. Each MG-* project directory contains a Snakemake workflow. https://stackoverflow.com/questions/1783405/how-do-i-check-out-a-remote-git-branch
+The repository is divided into subprojects, details of each below. Each MG-* project directory contains a Snakemake workflow.
 
 ## Benchmarking
 
