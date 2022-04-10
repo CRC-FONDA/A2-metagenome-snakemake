@@ -1,5 +1,5 @@
 # Search parameters (besides error rate)  are set in config.yaml
-configfile: "../../A2-metagenome-snakemake/search_config.yaml"
+configfile: "/home/evelia95/A2-metagenome-snakemake/search_config.yaml"
 
 # Parameters for the search
 k = config["kmer_length"]
@@ -15,15 +15,15 @@ h = config["nr_hashes"]
 # create an IBF from clustered database
 rule dream_IBF:
 	input:
-		expand("../../" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
+		expand("../" + str(bin_nr) + "/bins/{bin}.fasta", bin = bin_list)
 	output:
-		"IBF.filter"
+		"dream.filter"
 	threads: 40
 	resources:
 		nodelist = "cmp[241]",
 		mem_mb = 1000
 	benchmark:
-		repeat("benchmarks/IBF.txt", 2)
+		"benchmarks/IBF.txt"
 	shell:
 		"dream_yara_build_filter --threads {threads} --kmer-size {k} --filter-type bloom --bloom-size {bf} --num-hash {h} --output-file {output} {input}"
 
@@ -32,7 +32,7 @@ rule dream_IBF:
 # this can be adjusted with command line arguments (see README)
 rule dream_FM_index:
 	input:
-		"../../" + str(bin_nr) + "/bins/{bin}.fasta"
+		"../" + str(bin_nr) + "/bins/{bin}.fasta"
 	output:
 		"fm_indices/{bin}.sa.val"
 	params:
@@ -41,7 +41,7 @@ rule dream_FM_index:
 	benchmark:
 		repeat("benchmarks/fm_{bin}.txt", 2)
 	resources:
-		nodelist = lambda wildcards : "cmp[206]" if int(wildcards.bin) < 85 else ("cmp[207]" if int(wildcards.bin) < 170 else "cmp[208]")
+		nodelist = lambda wildcards : "cmp[207]" if int(wildcards.bin) < 85 else ("cmp[221]" if int(wildcards.bin) < 170 else "cmp[223]")
 	shell:
 		"""
 		dream_yara_indexer --threads {threads} --output-prefix {params.outdir} {input}
@@ -55,16 +55,16 @@ rule dream_FM_index:
 # map reads to bins that pass the IBF prefilter
 rule dream_mapper:
 	input:
-		filter = "IBF.filter",
+		filter = "dream.filter",
 		index = expand("fm_indices/{bin}.sa.val", bin=bin_list),
-		reads = "../../" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/{bin}.fastq"
+		reads = "../" + str(bin_nr) + "/reads_e" + str(epr) + "_" + str(rl) + "/{bin}.fastq"
 	output:
 		"mapped_reads/{bin}.sam"
 	params:
 		index_dir = "fm_indices/"
 	threads: 4
 	resources:
-		nodelist = lambda wildcards : "cmp[206]" if int(wildcards.bin) < 85 else ("cmp[207]" if int(wildcards.bin) < 170 else "cmp[208]")
+		nodelist = lambda wildcards : "cmp[207]" if int(wildcards.bin) < 85 else ("cmp[221]" if int(wildcards.bin) < 170 else "cmp[223]")
 	benchmark:
 		repeat("benchmarks/mapped_{bin}.txt", 2)
 	shell:

@@ -12,12 +12,12 @@ rule samtools_merge:
 		extra_threads = 9
 	threads: 10
 	resources:
-		nodelist = "cmp[241]",
+		nodelist = "cmp[226]",
 		mem_mb = 10000
 	benchmark:
 		repeat("benchmarks/merge.txt", 2)
 	shell:
-		"samtools merge {input} -o {output} --threads {params.extra_threads}"
+		"samtools merge {output} {input} -f --threads {params.extra_threads}"
 
 rule samtools_collate:
 	input:
@@ -28,10 +28,10 @@ rule samtools_collate:
 		extra_threads = 9
 	threads: 10
 	resources:
-		nodelist = "cmp[241]",
+		nodelist = "cmp[226]",
 		mem_mb = 10000
 	benchmark:
 		repeat("benchmarks/collate.txt", 2)
 	shell:
-		"samtools collate {input} -o {output} --threads {params.extra_threads}"
+		"samtools collate -o {output} {input} --threads {params.extra_threads}"
 
