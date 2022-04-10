@@ -6,7 +6,7 @@ The repository is divided into subprojects, details of each below. Each MG-* pro
 
 ## Benchmarking
 
-There are git branches `allegro` for the allegro cluster and `redwood` for the redwood server (MG-1 and MG-3).
+There are git branches `allegro` for the allegro cluster and `redwood` for the redwood server (MG-1 and MG-3). Check the 80GB_benchmarks directory for benchmarking results on an 80GB reference database. 
 
 ---
 
