@@ -1,18 +1,7 @@
-#-----------------------------
-# Choose which workflow to generate data for.
-# One at a time. 
-#-----------------------------
-
-#wf: "MG-R"
-#wf: "MG-1"
-#wf: "MG-2"
-#wf: "MG-3"
-wf: "MG-4"
-
 # location of raptor binaries
-raptor_bin_dir: "/home/evelin/metagenomics/raptor_data_simulation/build/bin"
+raptor_bin_dir: "../../raptor_data_simulation/build/bin"
 # location of simulated data
-data_out_dir: "/home/evelin/metagenomics/A2-metagenome-snakemake/data"
+data_out_dir: "../../NO_BACKUP/simulated_metagenome"
 
 #-----------------------------
 # Parameters of simulated data.
@@ -23,12 +12,24 @@ data_out_dir: "/home/evelin/metagenomics/A2-metagenome-snakemake/data"
 #  * read length
 #
 #-----------------------------
+ 
+  # D3: LARGE DATASET
+  #ref_size: 85899345920    # size of reference in bytes? 80*2^30 = 80GiB * 4 haplotypes = 320GB
+  #number_of_bins: 1024
+  #reads_per_genome: 10000      # 10000 * nr_bins * haplotype_count = 40 million reads
 
-ref_size: 102400        # size of reference in bytes? 4*2^20 = 4MiB
-number_of_bins: 8
-errors_per_read: 5       # number of errors; this is the basis for error rate in an approximate match
+  # D2: MID DATASET
+  ref_size: 21474836480    # size of reference in bytes? 20*2^30 = 20GiB * 4 haplotypes = 80GB
+  number_of_bins: 256
+  reads_per_genome: 2000      # 2000 * nr_bins * haplotype_count = 2 million reads
+
+  # D1: SMALL DATASET
+  #ref_size: 262144000    # size of reference in bytes? 250*2^20 = 250MiB * 4 haplotypes = 1GB
+  #number_of_bins: 64
+  #reads_per_genome: 500      # 10000 * nr_bins * haplotype_count = 100k reads
+
+errors_per_read: 3     # number of errors; this is the basis for error rate in an approximate match
 read_length: 150
-read_count: 1024        # size of query (count)
 
 #-----------------------------
 # Mason variator parameters.
@@ -42,15 +43,4 @@ snp_rate: 0.01
 small_indel_rate: 0.001
 
 # boolean variable to divide similar haplotypes between different bins
-mix_bins: 1     # NOT relevant for MG-4
-
-#-----------------------------
-# Customizing the number of read files in MG-4
-#
-# For the other workflows nr of read files == nr of bins
-#
-# Note that it must hold that (read_count % read_file_count) == 0
-#-----------------------------
-
-read_file_count: 4
-
+mix_bins: 1

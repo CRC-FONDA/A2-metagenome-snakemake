@@ -1,15 +1,38 @@
 # Metagenome read mapping approaches
 
-This repository contains multiple examples of scientific workflows. The goal of this repository is to write workflow components for mapping metagenomics reads that can be used on different architectures. 
+This repository contains examples of scientific workflows. The goal of this repository is to write workflow components for mapping metagenomics reads that can be used on different architectures. 
 
-The repository is divided into subprojects, details of each below.
+The repository is divided into subprojects, details of each below. Each MG-* project directory contains a Snakemake workflow.
+
+## Benchmarking
+
+There are git branches `allegro` for the allegro cluster and `redwood` for the redwood server (MG-1 and MG-3).
 
 ---
 
-## Running snakemake
+### Running snakemake 
 
-To run the snakemake workflow in one of the subfolders:
-`snakemake --use-conda --cores {e.g 8}`
+Prerequisites: 
+- conda installation https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html
+- active conda environment with snakemake installation https://snakemake.readthedocs.io/en/stable/getting_started/installation.html
+- built from source:
+  * https://github.com/eseiler/raptor_data_simulation
+  * https://github.com/seqan/dream_yara (MG-1 and MG-3)
+  * https://github.com/eaasna/low-memory-prefilter (MG-2)
+  * https://github.com/eaasna/match-consolidator (MG-2)
+
+
+Start by running the raptor_data_simulation workflow. Set input parameters in `simulation_config.yaml`.
+```
+cd raptor_data_simulation
+snakemake --cores 1
+```
+
+Then set the search parameters in `search_config.yaml`. To run one of the MG-* snakemake workflows:
+```
+cd MG-1
+snakemake --use-conda --cores {e.g 8}
+```
 
 Other useful flags:
 1. `--force-use-threads` add this flag to force threads instead of processes in case each process takes too much local memory to be run in parallel 
@@ -23,11 +46,6 @@ Other useful flags:
 ### raptor_data_simulation
 Simulating DNA sequences with https://github.com/eseiler/raptor_data_simulation.
 Run this workflow before running any of the MG-* workflows. The data simulation parameters are set in `simulation_config.yaml`. All MG-x workflows have a separate configuration file called `search_config.yaml` where prefiltering and search parameters should be set. 
-
-**NOTE:** Raptor data simulation has to be built from source. 
-
-Data simulation source code:
-https://github.com/eseiler/raptor_data_simulation
 
 
 ### MG-R 
@@ -51,11 +69,6 @@ Steps of workflow:
 
 ![job counts for MG-1](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-1/job_counts.png)
 
-**NOTE:** DREAM-Yara is not available through conda and has to be built from source. Also add location of DREAM-Yara binaries to $PATH.
-
-DREAM-Yara source code:
-https://github.com/temehi/dream_yara
-
 ### MG-2
 ![directed acyclic graph for MG-2](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-2/dag.png)
 
@@ -71,14 +84,6 @@ Steps of workflow:
 
 ![job counts for MG-2](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-2/job_counts.png)
 
-**NOTE:** The hashmap and match-consolidator have to be built from source and the location of the binaries should be added to $PATH.
-
-Hashmap source code: 
-https://github.com/eaasna/low-memory-prefilter
-
-Match consolidator source code:
-https://github.com/eaasna/match-consolidator
-
 ### MG-3
 ![directed acyclic graph for MG-3](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-3/dag.png)
 
@@ -90,11 +95,6 @@ Steps of workflow:
 3. Map each read to the FM-index determined by IBF pre-filtering (one job per bin)
 
 ![job counts for MG-3](https://github.com/eaasna/A2-metagenome-snakemake/blob/main/MG-3/job_counts.png)
-
-**NOTE:** DREAM-Yara is not available through conda and has to be built from source. Also add location of DREAM-Yara binaries to $PATH.
-
-DREAM-Yara source code:
-https://github.com/temehi/dream_yara
 
 ---
 

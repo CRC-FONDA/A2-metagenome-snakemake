@@ -14,8 +14,15 @@ rule samtools_merge:
 		"mapped_reads/all.sam"
 	conda:
 		"../../envs/samtools.yaml"
+        params:
+		extra_threads = 9
+	threads: 10
+	resources:
+		nodelist = "cmp[240]"
+	benchmark:
+		repeat("benchmarks/merge.txt", 2)
 	shell:
-		"samtools merge {input} -o {output}"
+		"samtools merge {input} -o {output} --threads {params.extra_threads}"
 
 rule samtools_collate:
 	input:
@@ -24,6 +31,13 @@ rule samtools_collate:
 		"mapped_reads/all_sorted.sam"
 	conda:
 		"../../envs/samtools.yaml"
+        params:
+		extra_threads = 9
+	threads: 10
+	resources:
+		nodelist = "cmp[240]"
+	benchmark:
+		repeat("benchmarks/collate.txt", 2)
 	shell:
-		"samtools collate {input} -o {output}"
+		"samtools collate {input} -o {output} --threads {params.extra_threads}"
 
